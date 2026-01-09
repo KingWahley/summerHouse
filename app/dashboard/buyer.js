@@ -3,84 +3,80 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { supabase } from "@/lib/supabaseClient";
+import { useAuth } from "@/lib/useAuth";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 
 export default function BuyerDashboard() {
   const router = useRouter();
-  const [user, setUser] = useState(null);
+  const { user, role, loading } = useAuth();
+
   const [saved, setSaved] = useState([]);
   const [bookings, setBookings] = useState([]);
   const [unreadMessages, setUnreadMessages] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [dataLoading, setDataLoading] = useState(true);
 
   useEffect(() => {
-    init();
-  }, []);
+    if (loading) return;
 
-  async function init() {
-    const {
-      data: { user }
-    } = await supabase.auth.getUser();
-
+    // 🔒 Auth guard
     if (!user) {
-      router.push("/auth/login");
+      router.replace("/auth/login");
       return;
     }
 
-    setUser(user);
-
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("role")
-      .eq("id", user.id)
-      .single();
-
-    if (profile?.role !== "buyer") {
-      router.push("/dashboard");
+    if (role !== "buyer") {
+      router.replace("/dashboard");
       return;
     }
+
+    fetchAll();
+    // eslint-disable-next-line
+  }, [loading, user, role]);
+
+  async function fetchAll() {
+    const supabase = getSupabaseClient();
 
     await Promise.all([
-      fetchSaved(user.id),
-      fetchBookings(user.id),
-      fetchUnreadMessages(user.id)
+      fetchSaved(supabase),
+      fetchBookings(supabase),
+      fetchUnreadMessages(supabase)
     ]);
 
-    setLoading(false);
+    setDataLoading(false);
   }
 
-  async function fetchSaved(userId) {
+  async function fetchSaved(supabase) {
     const { data } = await supabase
       .from("saved_listings")
       .select("listing_id, listings(id, title, price)")
-      .eq("user_id", userId)
+      .eq("user_id", user.id)
       .limit(5);
 
     setSaved(data || []);
   }
 
-  async function fetchBookings(userId) {
+  async function fetchBookings(supabase) {
     const { data } = await supabase
       .from("inspection_requests")
       .select("id, status, date, listings(title)")
-      .eq("user_id", userId)
+      .eq("user_id", user.id)
       .order("created_at", { ascending: false })
       .limit(5);
 
     setBookings(data || []);
   }
 
-  async function fetchUnreadMessages(userId) {
+  async function fetchUnreadMessages(supabase) {
     const { count } = await supabase
       .from("messages")
-      .select("*", { count: "exact", head: true })
+      .select("id", { count: "exact", head: true })
       .eq("read", false)
-      .neq("sender_id", userId);
+      .neq("sender_id", user.id);
 
     setUnreadMessages(count || 0);
   }
 
-  if (loading) {
+  if (loading || dataLoading) {
     return (
       <div className="p-10 text-gray-500">
         Loading dashboard…
@@ -135,7 +131,7 @@ export default function BuyerDashboard() {
 
             <Link
               href={`/listings/${item.listing_id}`}
-              className="text-sm text-black font-medium hover:underline"
+              className="text-sm font-medium hover:underline"
             >
               View
             </Link>
@@ -192,7 +188,7 @@ function Section({ title, href, emptyText, children }) {
         <h2 className="font-semibold text-lg">{title}</h2>
         <Link
           href={href}
-          className="text-sm text-black font-medium hover:underline"
+          className="text-sm font-medium hover:underline"
         >
           View all
         </Link>

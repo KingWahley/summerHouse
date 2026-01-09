@@ -1,14 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 
-export default function Messages() {
-  const [user, setUser] = useState(null);
+export default function InboxPage() {
+  const router = useRouter();
+  const supabase = getSupabaseClient();
+
   const [conversations, setConversations] = useState([]);
-  const [activeConversation, setActiveConversation] = useState(null);
-  const [messages, setMessages] = useState([]);
-  const [text, setText] = useState("");
+  const [userId, setUserId] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     init();
@@ -16,134 +19,120 @@ export default function Messages() {
 
   async function init() {
     const {
-      data: { user }
-    } = await supabase.auth.getUser();
+      data: { session },
+    } = await supabase.auth.getSession();
 
-    if (!user) return;
+    if (!session?.user) {
+      router.replace("/auth/login");
+      return;
+    }
 
-    setUser(user);
-    fetchConversations(user.id);
+    setUserId(session.user.id);
+    await fetchConversations(session.user.id);
+    setLoading(false);
   }
 
-  async function fetchConversations(userId) {
-    const { data } = await supabase
+  async function fetchConversations(uid) {
+    const { data, error } = await supabase
       .from("conversations")
-      .select("id, updated_at")
-      .or(`buyer_id.eq.${userId},agent_id.eq.${userId}`)
-      .order("updated_at", { ascending: false });
+      .select(
+        `
+    id,
+    created_at,
+    listing:listing_id (
+      id,
+      title
+    ),
+    buyer_id,
+    agent_id,
+    buyer:buyer_id (
+      id,
+      full_name
+    ),
+    agent:agent_id (
+      id,
+      full_name
+    ),
+    messages (
+      body,
+      created_at
+    )
+  `
+      )
+      .or(`buyer_id.eq.${uid},agent_id.eq.${uid}`)
+      .order("created_at", { ascending: false });
 
-    setConversations(data || []);
+    if (error) {
+      console.error(error.message);
+      setConversations([]);
+      return;
+    }
+
+    // Sort messages and extract last message
+    const formatted = data.map((c) => {
+      const sortedMessages = [...(c.messages || [])].sort(
+        (a, b) => new Date(b.created_at) - new Date(a.created_at)
+      );
+
+      const lastMessage = sortedMessages[0];
+
+      const isBuyer = c.buyer_id === uid;
+
+      const otherUser = isBuyer
+        ? c.agent || { full_name: "Agent" }
+        : c.buyer || { full_name: "Buyer" };
+
+      return {
+        id: c.id,
+        listingTitle: c.listing?.title || "Property",
+        otherUserName: otherUser.full_name,
+        lastMessage: lastMessage?.body || "No messages yet",
+        lastMessageTime: lastMessage?.created_at || c.created_at,
+      };
+    });
+
+    setConversations(formatted);
   }
 
-  async function openConversation(convo) {
-    setActiveConversation(convo);
-
-    const { data } = await supabase
-      .from("messages")
-      .select("*")
-      .eq("conversation_id", convo.id)
-      .order("created_at", { ascending: true });
-
-    setMessages(data || []);
-  }
-
-  async function sendMessage(e) {
-    e.preventDefault();
-    if (!text || !activeConversation) return;
-
-    const payload = {
-      conversation_id: activeConversation.id,
-      sender_id: user.id,
-      content: text
-    };
-
-    await supabase.from("messages").insert(payload);
-
-    setMessages(prev => [...prev, { ...payload, created_at: new Date() }]);
-    setText("");
+  if (loading) {
+    return <div className="p-10 text-gray-500">Loading inbox…</div>;
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-10 grid grid-cols-1 md:grid-cols-3 gap-6 h-[80vh]">
-      {/* Conversations */}
-      <div className="border rounded-lg overflow-y-auto">
-        <div className="p-4 font-semibold border-b">
-          Conversations
-        </div>
+    <div className="max-w-4xl mx-auto px-6 py-10">
+      <h1 className="text-3xl font-bold mb-6">Messages</h1>
 
-        {conversations.length === 0 && (
-          <p className="p-4 text-sm text-gray-500">
-            No conversations yet.
-          </p>
-        )}
-
-        {conversations.map(convo => (
-          <button
-            key={convo.id}
-            onClick={() => openConversation(convo)}
-            className={`w-full text-left p-4 border-b hover:bg-gray-50 ${
-              activeConversation?.id === convo.id
-                ? "bg-gray-100"
-                : ""
-            }`}
-          >
-            <p className="text-sm font-medium">
-              Conversation #{convo.id.slice(0, 6)}
-            </p>
-            <p className="text-xs text-gray-400">
-              {new Date(convo.updated_at).toLocaleString()}
-            </p>
-          </button>
-        ))}
-      </div>
-
-      {/* Chat Window */}
-      <div className="md:col-span-2 border rounded-lg flex flex-col">
-        {!activeConversation ? (
-          <div className="flex-1 flex items-center justify-center text-gray-500">
-            Select a conversation
-          </div>
-        ) : (
-          <>
-            <div className="p-4 border-b font-semibold">
-              Chat
-            </div>
-
-            <div className="flex-1 overflow-y-auto p-4 space-y-3">
-              {messages.map((msg, i) => (
-                <div
-                  key={i}
-                  className={`max-w-[70%] p-3 rounded-lg text-sm ${
-                    msg.sender_id === user.id
-                      ? "bg-black text-white ml-auto"
-                      : "bg-gray-200"
-                  }`}
-                >
-                  {msg.content}
-                </div>
-              ))}
-            </div>
-
-            <form
-              onSubmit={sendMessage}
-              className="p-4 border-t flex gap-3"
+      {conversations.length === 0 ? (
+        <p className="text-gray-500">You don’t have any conversations yet.</p>
+      ) : (
+        <div className="space-y-4">
+          {conversations.map((c) => (
+            <Link
+              key={c.id}
+              href={`/messages/${c.id}`}
+              className="block border rounded-xl p-4 bg-white hover:shadow-sm transition"
             >
-              <input
-                value={text}
-                onChange={e => setText(e.target.value)}
-                placeholder="Type a message…"
-                className="flex-1 border rounded-md px-3 py-2"
-              />
-              <button
-                type="submit"
-                className="bg-black text-white px-4 py-2 rounded-md"
-              >
-                Send
-              </button>
-            </form>
-          </>
-        )}
-      </div>
+              <div className="flex justify-between items-start gap-4">
+                <div>
+                  <p className="font-semibold">{c.listingTitle}</p>
+
+                  <p className="text-sm text-gray-600 mt-1">
+                    With {c.otherUserName}
+                  </p>
+
+                  <p className="text-sm text-gray-500 mt-2 line-clamp-1">
+                    {c.lastMessage}
+                  </p>
+                </div>
+
+                <div className="text-xs text-gray-400">
+                  {new Date(c.lastMessageTime).toLocaleDateString()}
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

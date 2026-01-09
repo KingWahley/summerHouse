@@ -2,67 +2,75 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { getSupabaseClient } from "../../lib/supabaseClient";
+import { useAuth } from "@/lib/useAuth";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 
 export default function AgentDashboard() {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
+  const { user, role, loading } = useAuth();
+
   const [listings, setListings] = useState([]);
+  const [dataLoading, setDataLoading] = useState(true);
 
   useEffect(() => {
-    let active = true;
+    if (loading) return;
 
-    async function load() {
-      const supabase = getSupabaseClient();
-      if (!supabase) return;
-
-      // 1️⃣ Check session
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-
-      if (!session?.user) {
-        router.replace("/auth/login");
-        return;
-      }
-
-      // 2️⃣ Fetch agent listings
-      const { data, error } = await supabase
-        .from("listings")
-        .select("id, title, price, type, status, created_at")
-        .eq("owner_id", session.user.id)
-        .order("created_at", { ascending: false });
-
-      if (!active) return;
-
-      if (error) {
-        console.error(error.message);
-        setListings([]);
-      } else {
-        setListings(data || []);
-      }
-
-      setLoading(false);
+    // 🔒 Auth guard
+    if (!user) {
+      router.replace("/auth/login");
+      return;
     }
 
-    load();
-    return () => {
-      active = false;
-    };
-  }, [router]);
+    if (!["agent", "owner", "admin"].includes(role)) {
+      router.replace("/dashboard");
+      return;
+    }
 
-  if (loading) {
-    return <div className="p-10 text-gray-500">Loading agent dashboard…</div>;
+    fetchListings();
+    // eslint-disable-next-line
+  }, [loading, user, role]);
+
+  async function fetchListings() {
+    const supabase = getSupabaseClient();
+
+    const { data, error } = await supabase
+      .from("listings")
+      .select("id, title, price, type, status, created_at")
+      .eq("owner_id", user.id)
+      .order("created_at", { ascending: false });
+
+    if (!error) {
+      setListings(data || []);
+    } else {
+      console.error(error.message);
+      setListings([]);
+    }
+
+    setDataLoading(false);
+  }
+
+  if (loading || dataLoading) {
+    return (
+      <div className="p-10 text-gray-500">
+        Loading agent dashboard…
+      </div>
+    );
   }
 
   return (
     <div className="p-10 max-w-7xl mx-auto">
-      <h1 className="text-3xl font-bold mb-2">Agent / Owner Dashboard</h1>
-      <p className="text-gray-500 mb-8">Manage your property listings</p>
+      <h1 className="text-3xl font-bold mb-2">
+        Agent / Owner Dashboard
+      </h1>
+      <p className="text-gray-500 mb-8">
+        Manage your property listings
+      </p>
 
       {/* Listings */}
       <section>
-        <h2 className="text-xl font-semibold mb-4">My Listings</h2>
+        <h2 className="text-xl font-semibold mb-4">
+          My Listings
+        </h2>
 
         {listings.length === 0 ? (
           <p className="text-gray-500">
@@ -70,9 +78,14 @@ export default function AgentDashboard() {
           </p>
         ) : (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {listings.map((listing) => (
-              <div key={listing.id} className="bg-white border rounded-xl p-5">
-                <h3 className="font-semibold text-lg">{listing.title}</h3>
+            {listings.map(listing => (
+              <div
+                key={listing.id}
+                className="bg-white border rounded-xl p-5"
+              >
+                <h3 className="font-semibold text-lg">
+                  {listing.title}
+                </h3>
 
                 <p className="text-sm text-gray-500 capitalize mt-1">
                   {listing.type}
@@ -96,7 +109,9 @@ export default function AgentDashboard() {
                   </span>
 
                   <span className="text-xs text-gray-400">
-                    {new Date(listing.created_at).toLocaleDateString()}
+                    {new Date(
+                      listing.created_at
+                    ).toLocaleDateString()}
                   </span>
                 </div>
               </div>
