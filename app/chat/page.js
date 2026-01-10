@@ -2,11 +2,13 @@
 
 import { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
-import { supabase } from "@/lib/supabaseClient";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 
 export default function ChatPage() {
   const searchParams = useSearchParams();
   const conversationId = searchParams.get("conversation");
+  const supabase = getSupabaseClient();
+
 
   const [user, setUser] = useState(null);
   const [messages, setMessages] = useState([]);
