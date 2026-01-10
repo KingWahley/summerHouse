@@ -34,7 +34,7 @@ export default function ContactAgent({ listingId, agentId }) {
         .insert({
           listing_id: listingId,
           buyer_id: buyerId,
-          agent_id: agentId
+          agent_id: agentId,
         })
         .select("id")
         .single();
@@ -47,20 +47,25 @@ export default function ContactAgent({ listingId, agentId }) {
 
   return (
     <>
-      <h3 className="text-lg font-semibold mb-2">
-        Interested in this property?
-      </h3>
+      <div>
+        <h3 className="text-lg font-semibold mb-2">
+          Interested in this property?
+        </h3>
 
-      <p className="text-sm text-gray-600 mb-4">
-        Contact the agent to schedule an inspection or ask questions.
-      </p>
+        <p className="text-sm text-gray-600 mb-4">
+          Contact the agent to schedule an inspection or ask questions.
+        </p>
+        <div className="fixed md:static bottom-0 left-0 right-0 z-50 bg-white border-t px-5 py-4">
+        <button
+          onClick={contactAgent}
+          className="w-full md:w-auto md:px-6 bg-black text-white py-3 rounded-xl font-medium"
+        >
+          Contact Agent
+        </button>
+      </div>
+      </div>
 
-      <button
-        onClick={contactAgent}
-        className="w-full bg-black text-white py-3 rounded font-medium"
-      >
-        Contact Agent
-      </button>
+      
     </>
   );
 }

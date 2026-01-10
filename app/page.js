@@ -21,7 +21,7 @@ export default function Home() {
 
           <div className="mt-8 flex flex-wrap gap-4">
             <Link
-              href="/search"
+              href="/listings"
               className="bg-black text-white px-6 py-3 rounded-md font-medium hover:opacity-90"
             >
               Browse Properties

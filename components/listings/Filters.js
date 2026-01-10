@@ -1,8 +1,8 @@
 export default function Filters({ filters, setFilters }) {
   return (
-    <>
+    <div className="space-y-3">
       <select
-        className="border p-3 rounded-md"
+        className="w-full border p-3 rounded-md"
         value={filters.type}
         onChange={e =>
           setFilters({ ...filters, type: e.target.value })
@@ -18,7 +18,7 @@ export default function Filters({ filters, setFilters }) {
       <input
         type="number"
         placeholder="Min price"
-        className="border p-3 rounded-md"
+        className="w-full border p-3 rounded-md"
         value={filters.minPrice}
         onChange={e =>
           setFilters({ ...filters, minPrice: e.target.value })
@@ -28,12 +28,12 @@ export default function Filters({ filters, setFilters }) {
       <input
         type="number"
         placeholder="Max price"
-        className="border p-3 rounded-md"
+        className="w-full border p-3 rounded-md"
         value={filters.maxPrice}
         onChange={e =>
           setFilters({ ...filters, maxPrice: e.target.value })
         }
       />
-    </>
+    </div>
   );
 }
