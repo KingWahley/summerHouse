@@ -1,6 +1,9 @@
 
 "use client";
+
 export const dynamic = "force-dynamic";
+export const dynamicParams = true;
+
 import { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import { getSupabaseClient } from "@/lib/supabaseClient";
