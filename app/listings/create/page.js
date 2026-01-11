@@ -41,7 +41,6 @@ export default function CreateListingPage() {
     amenities: [],
   });
 
-  /* ---------- ACCESS CONTROL ---------- */
   useEffect(() => {
     if (loading) return;
 
@@ -58,7 +57,6 @@ export default function CreateListingPage() {
     setPageLoading(false);
   }, [loading, user, role, router]);
 
-  /* ---------- FORM HANDLERS ---------- */
   function update(e) {
     const { name, value, type, checked } = e.target;
     setForm((prev) => ({
@@ -76,7 +74,6 @@ export default function CreateListingPage() {
     }));
   }
 
-  /* ---------- IMAGE UPLOAD ---------- */
   async function uploadImages(files) {
     const supabase = getSupabaseClient();
     setUploading(true);
@@ -103,7 +100,6 @@ export default function CreateListingPage() {
     return uploaded;
   }
 
-  /* ---------- SUBMIT ---------- */
   async function submit(e) {
     e.preventDefault();
 
@@ -132,13 +128,11 @@ export default function CreateListingPage() {
     return <div className="p-10 text-gray-500">Loading…</div>;
   }
 
-  /* ---------- UI ---------- */
   return (
     <div className="max-w-4xl mx-auto p-10">
       <h1 className="text-3xl font-bold mb-6">Create Property Listing</h1>
 
       <form onSubmit={submit} className="space-y-6">
-        {/* Basic info */}
         <input
           name="title"
           placeholder="Property title"
@@ -154,7 +148,6 @@ export default function CreateListingPage() {
           onChange={update}
         />
 
-        {/* Pricing */}
         <div className="grid md:grid-cols-3 gap-4">
           <input
             name="price"
@@ -182,7 +175,6 @@ export default function CreateListingPage() {
           </select>
         </div>
 
-        {/* Location */}
         <div className="grid md:grid-cols-3 gap-4">
           <input
             name="country"
@@ -204,7 +196,6 @@ export default function CreateListingPage() {
           />
         </div>
 
-        {/* Details */}
         <div className="grid md:grid-cols-3 gap-4">
           <input
             name="bedrooms"
@@ -229,7 +220,6 @@ export default function CreateListingPage() {
           />
         </div>
 
-        {/* Amenities */}
         <div>
           <p className="font-medium mb-2">Amenities</p>
           <div className="flex flex-wrap gap-3">
@@ -250,7 +240,6 @@ export default function CreateListingPage() {
           </div>
         </div>
 
-        {/* Images */}
         <div>
           <p className="font-medium mb-2">Property Images</p>
           <input
@@ -260,11 +249,15 @@ export default function CreateListingPage() {
             onChange={(e) => setImages([...e.target.files])}
           />
           {uploading && (
-            <p className="text-sm text-gray-500 mt-1">Uploading images…</p>
+            <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/70 backdrop-blur-sm">
+              <div className="flex flex-col items-center gap-3">
+                <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-black" />
+                <p className="text-sm text-gray-600">Uploading....</p>
+              </div>
+            </div>
           )}
         </div>
 
-        {/* Flags */}
         <div className="flex gap-6">
           <label className="flex items-center gap-2">
             <input type="checkbox" name="furnished" onChange={update} />

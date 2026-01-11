@@ -18,7 +18,6 @@ export default function BuyerDashboard() {
   useEffect(() => {
     if (loading) return;
 
-    // 🔒 Auth guard
     if (!user) {
       router.replace("/auth/login");
       return;
@@ -30,7 +29,6 @@ export default function BuyerDashboard() {
     }
 
     fetchAll();
-    // eslint-disable-next-line
   }, [loading, user, role]);
 
   async function fetchAll() {
@@ -90,7 +88,6 @@ export default function BuyerDashboard() {
         Buyer Dashboard
       </h1>
 
-      {/* Quick actions */}
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
         <QuickCard
           title="Saved Properties"
@@ -109,7 +106,6 @@ export default function BuyerDashboard() {
         />
       </div>
 
-      {/* Saved listings */}
       <Section
         title="Recently Saved"
         href="/saved"
@@ -139,7 +135,6 @@ export default function BuyerDashboard() {
         ))}
       </Section>
 
-      {/* Bookings */}
       <Section
         title="Inspection Requests"
         href="/bookings"
@@ -167,7 +162,6 @@ export default function BuyerDashboard() {
   );
 }
 
-/* ---------- UI Helpers ---------- */
 
 function QuickCard({ title, value, href }) {
   return (

@@ -19,7 +19,7 @@ export default async function ListingDetailPage({ params }) {
 
   return (
     <div>
-      <div className="text-center p-6 sticky top-0 z-20 bg-white">
+      {/* <div className="text-center p-6 sticky top-0 z-20 bg-white">
         <p className=" text-xl font-semibold text-pink-400">
           {listing.listing_type === "rent" && (
             <span className="text-sm font-medium text-gray-400"> for rent</span>
@@ -28,7 +28,7 @@ export default async function ListingDetailPage({ params }) {
             <span className="text-sm font-medium text-gray-400"> for sale</span>
           )}
         </p>
-      </div>
+      </div> */}
 
       <div className="min-h-screen bg-gray-100 flex justify-center py-6">
         <div className="w-full  bg-white  pb-[120px] overflow-hidden ">

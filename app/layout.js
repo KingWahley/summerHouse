@@ -9,12 +9,12 @@ const inter = Inter({
 
 export const metadata = {
   title: {
-    default: "RealHouse",
+    default: "SummerHouse",
     template: "%s | RealHouse"
   },
   description:
     "Find, rent, and sell verified properties with trusted agents and owners.",
-  applicationName: "RealHouse",
+  applicationName: "SummerHouse",
   keywords: [
     "real estate",
     "property",
@@ -23,13 +23,13 @@ export const metadata = {
     "apartments",
     "realhouse"
   ],
-  authors: [{ name: "RealHouse" }],
-  metadataBase: new URL("https://realhouse.app"),
+  authors: [{ name: "WebDevii" }],
+  metadataBase: new URL("https://summer-house-bay.vercel.app/"),
   openGraph: {
-    title: "RealHouse",
+    title: "SummerHouse",
     description:
       "A secure marketplace for buying, renting, and listing properties.",
-    siteName: "RealHouse",
+    siteName: "SummerHouse",
     type: "website"
   },
   robots: {

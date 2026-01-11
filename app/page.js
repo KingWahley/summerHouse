@@ -3,7 +3,6 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main className="bg-gray-50">
-      {/* Hero */}
       <section className="max-w-7xl mx-auto px-6 py-20 grid md:grid-cols-2 gap-16 items-center">
         <div>
           <h1 className="text-4xl md:text-5xl font-bold leading-tight">
@@ -36,7 +35,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Stats */}
         <div className="grid grid-cols-2 gap-6">
           <div className="bg-white p-6 rounded-xl border">
             <p className="text-3xl font-bold">Verified</p>
@@ -68,7 +66,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* How it works */}
       <section className="bg-white border-t">
         <div className="max-w-7xl mx-auto px-6 py-20">
           <h2 className="text-3xl font-bold mb-12">

@@ -41,13 +41,11 @@ export default function SignupPage() {
       return;
     }
 
-    // Email confirmation ON → no session yet
     if (!data.session) {
       setSuccess(true);
       return;
     }
 
-    // Email confirmation OFF → session exists
     router.replace("/profile/setup");
   }
 

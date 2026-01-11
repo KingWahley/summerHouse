@@ -25,7 +25,7 @@ export default function LoginPage() {
 
     const { error } = await supabase.auth.signInWithPassword({
       email,
-      password
+      password,
     });
 
     setLoading(false);
@@ -35,17 +35,14 @@ export default function LoginPage() {
       return;
     }
 
-    // ✅ SINGLE redirect, no effects, no loops
-    router.replace("/dashboard");
+    window.location.href = "/dashboard";
   }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
       <div className="w-full max-w-md bg-white border rounded-xl p-8 shadow-sm">
         <h1 className="text-2xl font-bold mb-2">Login</h1>
-        <p className="text-gray-500 mb-6">
-          Sign in to your RealHouse account
-        </p>
+        <p className="text-gray-500 mb-6">Sign in to your RealHouse account</p>
 
         {error && (
           <div className="mb-4 text-sm text-red-600 bg-red-50 border border-red-200 p-3 rounded">
@@ -59,7 +56,7 @@ export default function LoginPage() {
             placeholder="Email address"
             className="w-full border p-3 rounded-md"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
             required
           />
 
@@ -68,7 +65,7 @@ export default function LoginPage() {
             placeholder="Password"
             className="w-full border p-3 rounded-md"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             required
           />
 

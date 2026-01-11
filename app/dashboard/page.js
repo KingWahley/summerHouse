@@ -18,8 +18,11 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="p-10 text-gray-500">
-        Loading dashboard…
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/70 backdrop-blur-sm">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-black" />
+          <p className="text-sm text-gray-600">loading Dashboard</p>
+        </div>
       </div>
     );
   }
@@ -31,6 +34,5 @@ export default function DashboardPage() {
   if (role === "buyer") return <BuyerDashboard />;
   if (role === "agent" || role === "owner") return <AgentDashboard />;
 
-  // Admins are redirected via useEffect
   return null;
 }

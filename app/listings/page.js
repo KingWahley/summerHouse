@@ -72,7 +72,12 @@ export default function PublicListingsPage() {
       </form>
 
       {loading ? (
-        <p className="text-gray-500">Loading listings…</p>
+        <div className=" z-50 flex items-center justify-center bg-white/70 backdrop-blur-sm">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-black" />
+          <p className="text-sm text-gray-600">loading Listings</p>
+        </div>
+      </div>
       ) : (
         <ListingsGrid listings={results} />
       )}
