@@ -22,6 +22,9 @@ export default function Navbar() {
   const isActive = (path) =>
     pathname === path ? "text-black" : "text-gray-500";
 
+
+
+  
   return (
     <nav className="w-full border-b bg-white sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
