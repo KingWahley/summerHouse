@@ -48,7 +48,7 @@ export default function HowItWorks() {
   return (
     <div id="Howitworks" className="bg-white border-t">
       <div className="max-w-7xl mx-auto px-6 py-20">
-        <h2 className="text-3xl text-center md:text-left font-bold mb-12">How SummerHouse works</h2>
+        <h2 className=" text-2xl md:text-3xl text-center md:text-left font-bold mb-12">How SummerHouse works</h2>
 
         <div
           ref={containerRef}
