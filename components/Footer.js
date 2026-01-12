@@ -2,12 +2,12 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-    <footer className="border-t bg-white">
+    <footer className="border-t bg-black text-white md:text-gray-600 md:bg-white">
       <div className="max-w-7xl mx-auto px-6 py-14">
         <div className="grid gap-10 md:grid-cols-4">
           <div>
             <h3 className="text-xl font-bold mb-3">SummerHouse</h3>
-            <p className="text-sm text-gray-600 leading-relaxed">
+            <p className="text-sm text-white md:text-gray-600 leading-relaxed">
               A modern marketplace for transparent property discovery, trusted
               connections, and confident deals.
             </p>
@@ -72,7 +72,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-14 pt-6 border-t text-sm text-gray-600 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="mt-14 pt-6 border-t text-sm text-white md:text-gray-600 flex flex-col md:flex-row items-center justify-between gap-4">
           <span>
             © {new Date().getFullYear()} WebDevii. All rights reserved.
           </span>

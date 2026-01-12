@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function HeroSection() {
   return (
     <section
-  className="relative max-w-7xl mx-auto px-6 pb-20 bg-[url('/assets/bghero2.jpg')] pt-10 grid md:grid-cols-2 gap-16 items-center
+  className="relative max-w-7xl mx-auto px-6 pb-20  pt-10 grid md:grid-cols-2 gap-16 items-center
              md:bg-[url('/assets/bghero.jpg')] bg-cover bg-center bg-fixed"
 >
 
@@ -23,17 +23,17 @@ export default function HeroSection() {
           close deals faster.
         </p>
 
-        <div className="mt-8  flex flex-wrap gap-4">
+        <div className="mt-8  flex flex-row gap-4">
           <Link
             href="/listings"
-            className="bg-black text-white px-6 py-3 rounded-md font-medium hover:opacity-90"
+            className="bg-black px-2 text-white text-sm md:px-6 py-3 rounded-md font-medium hover:opacity-90"
           >
             Browse Properties
           </Link>
 
           <Link
             href="/auth/signup"
-            className="border px-6 py-3 rounded-md font-medium hover:bg-white"
+            className="border px-2 md:px-6 py-3 text-sm rounded-md font-medium hover:bg-white"
           >
             List Your Property
           </Link>
