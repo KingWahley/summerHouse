@@ -3,60 +3,60 @@ import Link from "next/link";
 export default function HeroSection() {
   return (
     <section
-  className="relative max-w-7xl mx-auto px-6 pb-20  pt-10 grid md:grid-cols-2 gap-16 items-center
+      className="relative  
              md:bg-[url('/assets/bghero.jpg')] bg-cover bg-center bg-fixed"
->
-
+    >
       <div className="absolute inset-0 bg-white/70 md:bg-white/60  pointer-events-none"></div>
+      <div className=" max-w-7xl mx-auto px-6 pb-20  pt-10 grid md:grid-cols-2 gap-16 items-center inset-0 ">
+        <div className="relative">
+          <h1 className="text-4xl md:text-5xl font-bold leading-tight">
+            Find, List, and Manage Property
+            <span className="block text-gray-500 mt-2">
+              Without the usual stress.
+            </span>
+          </h1>
 
-      <div className="relative">
-        <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-          Find, List, and Manage Property
-          <span className="block text-gray-500 mt-2">
-            Without the usual stress.
-          </span>
-        </h1>
+          <p className="mt-6 text-lg text-gray-600 max-w-xl">
+            SummerHouse connects buyers, renters, property owners, and agents on
+            one secure platform — search verified listings, book inspections,
+            and close deals faster.
+          </p>
 
-        <p className="mt-6 text-lg text-gray-600 max-w-xl">
-          SummerHouse connects buyers, renters, property owners, and agents on one
-          secure platform — search verified listings, book inspections, and
-          close deals faster.
-        </p>
+          <div className="mt-8  flex flex-row gap-4">
+            <Link
+              href="/listings"
+              className="bg-black px-2 text-white text-sm md:px-6 py-3 rounded-md font-medium hover:opacity-90"
+            >
+              Browse Properties
+            </Link>
 
-        <div className="mt-8  flex flex-row gap-4">
-          <Link
-            href="/listings"
-            className="bg-black px-2 text-white text-sm md:px-6 py-3 rounded-md font-medium hover:opacity-90"
-          >
-            Browse Properties
-          </Link>
-
-          <Link
-            href="/auth/signup"
-            className="border px-2 md:px-6 py-3 text-sm rounded-md font-medium hover:bg-white"
-          >
-            List Your Property
-          </Link>
+            <Link
+              href="/auth/signup"
+              className="border px-2 md:px-6 py-3 text-sm rounded-md font-medium hover:bg-white"
+            >
+              List Your Property
+            </Link>
+          </div>
         </div>
-      </div>
 
-      <div className="relative hidden md:grid grid-cols-2 gap-6">
-        <Feature
-          title="Verified"
-          text="Owners, agents, and listings go through moderation and KYC."
-        />
-        <Feature
-          title="Secure"
-          text="Role-based access, protected routes, and database-level security."
-        />
-        <Feature
-          title="Smart"
-          text="AI-assisted listings, search, and moderation."
-        />
-        <Feature
-          title="Scalable"
-          text="Built to support agents, teams, and large inventories."
-        />
+        <div className="relative hidden md:grid grid-cols-2 gap-6">
+          <Feature
+            title="Verified"
+            text="Owners, agents, and listings go through moderation and KYC."
+          />
+          <Feature
+            title="Secure"
+            text="Role-based access, protected routes, and database-level security."
+          />
+          <Feature
+            title="Smart"
+            text="AI-assisted listings, search, and moderation."
+          />
+          <Feature
+            title="Scalable"
+            text="Built to support agents, teams, and large inventories."
+          />
+        </div>
       </div>
     </section>
   );

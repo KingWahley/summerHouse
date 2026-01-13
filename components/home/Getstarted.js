@@ -3,7 +3,8 @@ import Link from "next/link";
 export default function GetStarted() {
   return (
     <div className="bg-gray-100 border-t  md:bg-[url('/assets/bghero.jpg')] bg-cover bg-center bg-fixed">
-      <div className="max-w-7xl md:bg-white/20 bg-white/40 mx-auto px-6 py-20 text-center">
+      
+      <div className="max-w-7xl  mx-auto px-6 py-20 text-center">
         <h2 className="text-3xl font-bold">Ready to get started?</h2>
         <p className="mt-4 text-gray-600">
           Create an account in minutes and access verified property listings.
