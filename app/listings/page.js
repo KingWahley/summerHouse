@@ -6,6 +6,8 @@ import FiltersWrapper from "@/components/listings/FiltersWrapper";
 import ListingsGrid from "@/components/listings/ListingsGrid";
 import { fetchPublicListings } from "@/lib/listings";
 import { Search } from "lucide-react";
+import Footer from "@/components/Footer";
+
 
 export default function PublicListingsPage() {
   const [query, setQuery] = useState("");
@@ -81,6 +83,8 @@ export default function PublicListingsPage() {
       ) : (
         <ListingsGrid listings={results} />
       )}
+      <Footer/>
     </div>
+    
   );
 }

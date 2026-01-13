@@ -4,9 +4,10 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/useAuth";
-import { Menu, X } from "lucide-react";
+import { Menu, X, Mail } from "lucide-react";
 import { getSupabaseClient } from "@/lib/supabaseClient";
 import Image from "next/image";
+import { useUnreadMessages } from "@/components/useUnreadMessages";
 
 export default function Navbar() {
   const { user, role, loading } = useAuth();
@@ -18,26 +19,27 @@ export default function Navbar() {
     await supabase.auth.signOut();
     window.location.href = "/auth/login";
   }
+   const unread = useUnreadMessages();
 
   const isActive = (path) =>
     pathname === path ? "text-black" : "text-gray-500";
 
-
-
-  
   return (
     <nav className="w-full border-b bg-white sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
-        <Link href="/" >
+        <Link href="/">
           <Image
             src="/assets/summerlogo.png"
             alt="summerlogo Logo"
-            width={60} 
-            height={40} 
+            width={60}
+            height={40}
           />
         </Link>
 
         <div className="hidden md:flex gap-6 text-sm font-medium items-center">
+          <Link href="/" className={isActive("/")}>
+            Home
+          </Link>
           <Link href="/listings" className={isActive("/listings")}>
             Listings
           </Link>
@@ -50,6 +52,28 @@ export default function Navbar() {
               Add Property
             </Link>
           )}
+          {user && (role === "agent" || role === "owner") && (
+
+          <Link href="/messages" className="relative">
+            <p className={isActive("/messages")} >Messages</p>
+
+            {unread > 0 && (
+              <span
+                className="
+            absolute -top-2 -right-2
+            min-w-[18px] h-[18px]
+            px-1
+            flex items-center justify-center
+            text-[10px] font-semibold
+            rounded-full
+            bg-pink-500 text-white
+          "
+              >
+                {unread > 9 ? "9+" : unread}
+              </span>
+            )}
+          </Link>
+            )}
 
           {user && (
             <Link href="/dashboard" className={isActive("/dashboard")}>
@@ -99,6 +123,9 @@ export default function Navbar() {
 
       {mobileOpen && (
         <div className="md:hidden border-t bg-white px-6 py-4 space-y-4 text-sm font-medium">
+          <Link href="/" className="block" onClick={() => setMobileOpen(false)}>
+            Home
+          </Link>
           <Link
             href="/listings"
             className="block"

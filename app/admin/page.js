@@ -123,7 +123,6 @@ export default function AdminDashboard() {
   );
 }
 
-/* ---------- Components ---------- */
 
 function AdminCard({ title, description, href }) {
   return (

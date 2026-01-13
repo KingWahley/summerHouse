@@ -18,7 +18,6 @@ export default function ListingModeration() {
   async function init() {
     const supabase = getSupabaseClient();
 
-    // 1️⃣ Check session
     const {
       data: { session }
     } = await supabase.auth.getSession();
@@ -28,7 +27,6 @@ export default function ListingModeration() {
       return;
     }
 
-    // 2️⃣ Check admin role
     const { data: profile } = await supabase
       .from("profiles")
       .select("role")
@@ -40,7 +38,6 @@ export default function ListingModeration() {
       return;
     }
 
-    // 3️⃣ Load pending listings
     await fetchPendingListings();
     setLoading(false);
   }

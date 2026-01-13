@@ -1,10 +1,7 @@
-
 "use client";
 
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
-
-
 
 import { useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
@@ -15,14 +12,12 @@ export default function ChatPage() {
   const { id } = useParams();
   const router = useRouter();
   const { user, loading: authLoading } = useAuth();
-
   const supabase = getSupabaseClient();
 
   const [messages, setMessages] = useState([]);
   const [text, setText] = useState("");
   const bottomRef = useRef(null);
 
-  /* ---------- LOAD + SUBSCRIBE ---------- */
   useEffect(() => {
     if (authLoading) return;
 
@@ -37,10 +32,8 @@ export default function ChatPage() {
     return () => {
       supabase.removeChannel(channel);
     };
-    // eslint-disable-next-line
   }, [authLoading, user, id]);
 
-  /* ---------- LOAD HISTORY ---------- */
   async function loadMessages() {
     const { data } = await supabase
       .from("messages")
@@ -49,9 +42,8 @@ export default function ChatPage() {
       .order("created_at", { ascending: true });
 
     setMessages(data || []);
-    scrollToBottom();
+    setTimeout(() => scrollToBottom(), 100); // ensure auto-scroll after render
 
-    // mark incoming as read
     await supabase
       .from("messages")
       .update({ read: true })
@@ -59,7 +51,6 @@ export default function ChatPage() {
       .neq("sender_id", user.id);
   }
 
-  /* ---------- REALTIME ---------- */
   function subscribeToMessages() {
     return supabase
       .channel(`messages:${id}`)
@@ -75,7 +66,6 @@ export default function ChatPage() {
           setMessages((prev) => [...prev, payload.new]);
           scrollToBottom();
 
-          // auto-read if incoming
           if (payload.new.sender_id !== user.id) {
             supabase
               .from("messages")
@@ -87,7 +77,6 @@ export default function ChatPage() {
       .subscribe();
   }
 
-  /* ---------- SEND ---------- */
   async function sendMessage(e) {
     e.preventDefault();
     if (!text.trim()) return;
@@ -104,53 +93,65 @@ export default function ChatPage() {
   }
 
   function scrollToBottom() {
-    requestAnimationFrame(() => {
-      bottomRef.current?.scrollIntoView({ behavior: "smooth" });
-    });
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }
 
-  /* ---------- UI ---------- */
   return (
-    <div className="max-w-3xl mx-auto h-[80vh] flex flex-col border rounded-xl bg-white">
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-3">
+    <div className="max-w-3xl mx-auto h-[80vh] flex flex-col bg-gray-50 border rounded-xl shadow">
+      {/* Messages container */}
+      <div className="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
         {messages.map((m) => {
           const mine = m.sender_id === user.id;
 
           return (
             <div
               key={m.id}
-              className={`flex ${mine ? "justify-end" : "justify-start"}`}
+              className={`flex items-end ${mine ? "justify-end" : "justify-start"}`}
             >
+              {!mine && (
+                <div className="flex-shrink-0 h-8 w-8 rounded-full bg-gray-300 flex items-center justify-center text-sm font-semibold text-gray-700 mr-2">
+                  {/* First letter as avatar */}
+                  {m.sender_name?.[0] || "U"}
+                </div>
+              )}
+
               <div
-                className={`max-w-[75%] px-4 py-2 rounded-lg text-sm ${
+                className={`max-w-[70%] px-4 py-2 text-sm rounded-2xl relative ${
                   mine
-                    ? "bg-black text-white rounded-br-none"
-                    : "bg-gray-100 text-gray-800 rounded-bl-none"
+                    ? "bg-gradient-to-br from-black to-gray-800 text-white rounded-br-none"
+                    : "bg-white text-gray-800 rounded-bl-none shadow-sm"
                 }`}
               >
                 {m.body}
-                <div className="text-[10px] opacity-70 mt-1 text-right">
-                  {new Date(m.created_at).toLocaleTimeString()}
+
+                <div className="text-[10px] opacity-50 mt-1 text-right">
+                  {new Date(m.created_at).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
                 </div>
               </div>
+
+              {mine && (
+                <div className="flex-shrink-0 w-2" /> // spacing
+              )}
             </div>
           );
         })}
         <div ref={bottomRef} />
       </div>
 
-      {/* Input */}
-      <form onSubmit={sendMessage} className="border-t p-3 flex gap-2">
+      {/* Input box */}
+      <form onSubmit={sendMessage} className="p-3 flex gap-2 border-t bg-white">
         <input
           value={text}
           onChange={(e) => setText(e.target.value)}
-          className="flex-1 border rounded px-3 py-2 text-sm"
+          className="flex-1 border rounded-full px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-gray-300"
           placeholder="Type a message…"
         />
         <button
           type="submit"
-          className="bg-black text-white px-5 rounded text-sm"
+          className="bg-black text-white px-5 py-2 rounded-full text-sm hover:bg-gray-900 transition"
         >
           Send
         </button>

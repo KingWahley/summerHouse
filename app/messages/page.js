@@ -68,14 +68,12 @@ export default function InboxPage() {
       return;
     }
 
-    // Sort messages and extract last message
     const formatted = data.map((c) => {
       const sortedMessages = [...(c.messages || [])].sort(
         (a, b) => new Date(b.created_at) - new Date(a.created_at)
       );
 
       const lastMessage = sortedMessages[0];
-
       const isBuyer = c.buyer_id === uid;
 
       const otherUser = isBuyer
@@ -95,39 +93,56 @@ export default function InboxPage() {
   }
 
   if (loading) {
-    return <div className="p-10 text-gray-500">Loading inbox…</div>;
+    return (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-white/70 backdrop-blur-sm">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-10 w-10 animate-spin rounded-full border-4 border-gray-300 border-t-black" />
+          <p className="text-sm text-gray-600">Loading messages...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-6 py-10">
-      <h1 className="text-3xl font-bold mb-6">Messages</h1>
+    <div className="max-w-3xl mx-auto px-6 py-10">
+      <h1 className="text-3xl font-bold mb-6">Inbox</h1>
 
       {conversations.length === 0 ? (
         <p className="text-gray-500">You don’t have any conversations yet.</p>
       ) : (
-        <div className="space-y-4">
+        <div className="space-y-3">
           {conversations.map((c) => (
             <Link
               key={c.id}
               href={`/messages/${c.id}`}
-              className="block border rounded-xl p-4 bg-white hover:shadow-sm transition"
+              className="flex items-center gap-4 p-4 bg-white rounded-xl shadow hover:shadow-lg transition relative"
             >
-              <div className="flex justify-between items-start gap-4">
-                <div>
-                  <p className="font-semibold">{c.listingTitle}</p>
+              {/* Avatar */}
+              <div className="flex-shrink-0 h-12 w-12 rounded-full bg-gray-200 flex items-center justify-center text-lg font-semibold text-gray-700">
+                {c.otherUserName
+                  .split(" ")
+                  .map((n) => n[0])
+                  .join("")
+                  .slice(0, 2)}
+              </div>
 
-                  <p className="text-sm text-gray-600 mt-1">
-                    With {c.otherUserName}
+              {/* Message Preview */}
+              <div className="flex-1 min-w-0">
+                <div className="flex justify-between items-center">
+                  <p className="font-semibold text-gray-900 truncate">
+                    {c.otherUserName}
                   </p>
-
-                  <p className="text-sm text-gray-500 mt-2 line-clamp-1">
-                    {c.lastMessage}
+                  <p className="text-xs text-gray-400 ml-2">
+                    {new Date(c.lastMessageTime).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                    })}
                   </p>
                 </div>
-
-                <div className="text-xs text-gray-400">
-                  {new Date(c.lastMessageTime).toLocaleDateString()}
-                </div>
+                <p className="text-sm text-gray-600 truncate mt-1">
+                  {c.lastMessage}
+                </p>
+                <p className="text-xs text-gray-400 mt-0.5">{c.listingTitle}</p>
               </div>
             </Link>
           ))}

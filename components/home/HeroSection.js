@@ -1,13 +1,38 @@
+"use client";
+
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 
 export default function HeroSection() {
+  const router = useRouter();
+  const supabase = getSupabaseClient();
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    checkUser();
+  }, []);
+
+  async function checkUser() {
+    const { data: { session } } = await supabase.auth.getSession();
+    setUser(session?.user || null);
+  }
+
+  function handleClick(path) {
+    if (!user) {
+      router.push("/auth/login"); 
+      return;
+    }
+    router.push("/listings/create"); 
+  }
+
   return (
     <section
-      className="relative  
-             md:bg-[url('/assets/bghero.jpg')] bg-cover bg-center bg-fixed"
+      className="relative md:bg-[url('/assets/bghero.jpg')] bg-cover bg-center bg-fixed"
     >
-      <div className="absolute inset-0 bg-white/70 md:bg-white/60  pointer-events-none"></div>
-      <div className=" max-w-7xl mx-auto px-6 pb-20  pt-10 grid md:grid-cols-2 gap-16 items-center inset-0 ">
+      <div className="absolute inset-0 bg-white/70 md:bg-white/60 pointer-events-none"></div>
+      <div className="max-w-7xl mx-auto px-6 pb-20 pt-10 grid md:grid-cols-2 gap-16 items-center inset-0">
         <div className="relative">
           <h1 className="text-4xl md:text-5xl font-bold leading-tight">
             Find, List, and Manage Property
@@ -22,20 +47,20 @@ export default function HeroSection() {
             and close deals faster.
           </p>
 
-          <div className="mt-8  flex flex-row gap-4">
-            <Link
-              href="/listings"
+          <div className="mt-8 flex flex-row gap-4">
+            <button
+              onClick={() => handleClick("/listings")}
               className="bg-black px-2 text-white text-sm md:px-6 py-3 rounded-md font-medium hover:opacity-90"
             >
               Browse Properties
-            </Link>
+            </button>
 
-            <Link
-              href="/auth/signup"
+            <button
+              onClick={() => handleClick("/auth/signup")}
               className="border px-2 md:px-6 py-3 text-sm rounded-md font-medium hover:bg-white"
             >
               List Your Property
-            </Link>
+            </button>
           </div>
         </div>
 

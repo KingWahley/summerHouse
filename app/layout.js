@@ -1,7 +1,7 @@
 import "./globals.css";
 import { Inter } from "next/font/google";
 import Navbar from "../components/Navbar";
-import Footer from "@/components/Footer";
+// import Footer from "@/components/Footer";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -11,7 +11,7 @@ const inter = Inter({
 export const metadata = {
   title: {
     default: "SummerHouse",
-    template: "%s | RealHouse",
+    template: "%s | SummerHouse",
   },
   description:
     "Find, rent, and sell verified properties with trusted agents and owners.",
@@ -45,7 +45,7 @@ export default function RootLayout({ children }) {
       <body className="min-h-screen bg-gray-50 text-gray-900 antialiased">
         <Navbar />
         <main>{children}</main>
-        <Footer />
+        {/* <Footer /> */}
       </body>
     </html>
   );
