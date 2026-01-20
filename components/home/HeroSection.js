@@ -15,22 +15,22 @@ export default function HeroSection() {
   }, []);
 
   async function checkUser() {
-    const { data: { session } } = await supabase.auth.getSession();
+    const {
+      data: { session },
+    } = await supabase.auth.getSession();
     setUser(session?.user || null);
   }
 
   function handleClick(path) {
     if (!user) {
-      router.push("/auth/login"); 
+      router.push("/auth/login");
       return;
     }
-    router.push("/listings/create"); 
+    router.push("/listings");
   }
 
   return (
-    <section
-      className="relative md:bg-[url('/assets/bghero.jpg')] bg-cover bg-center bg-fixed"
-    >
+    <section className="relative md:bg-[url('/assets/bghero.jpg')] bg-cover bg-center bg-fixed">
       <div className="absolute inset-0 bg-white/70 md:bg-white/60 pointer-events-none"></div>
       <div className="max-w-7xl mx-auto px-6 pb-20 pt-10 grid md:grid-cols-2 gap-16 items-center inset-0">
         <div className="relative">
@@ -48,19 +48,29 @@ export default function HeroSection() {
           </p>
 
           <div className="mt-8 flex flex-row gap-4">
-            <button
-              onClick={() => handleClick("/listings")}
-              className="bg-black px-2 text-white text-sm md:px-6 py-3 rounded-md font-medium hover:opacity-90"
-            >
-              Browse Properties
-            </button>
+            <div className="mt-8 flex flex-row gap-4">
+              
+              <button
+                onClick={() => router.push("/listings")}
+                className="bg-black px-2 text-white text-sm md:px-6 py-3 rounded-md font-medium hover:opacity-90"
+              >
+                Browse Properties
+              </button>
 
-            <button
-              onClick={() => handleClick("/auth/signup")}
-              className="border px-2 md:px-6 py-3 text-sm rounded-md font-medium hover:bg-white"
-            >
-              List Your Property
-            </button>
+            
+              <button
+                onClick={() => {
+                  if (!user) {
+                    router.push("/auth/login"); 
+                    return;
+                  }
+                  router.push("/listings/new"); 
+                }}
+                className="border px-2 md:px-6 py-3 text-sm rounded-md font-medium hover:bg-white"
+              >
+                List Your Property
+              </button>
+            </div>
           </div>
         </div>
 

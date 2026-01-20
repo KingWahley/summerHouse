@@ -80,7 +80,7 @@ export default function LoginPage() {
         <div className="mt-6 text-sm text-center text-gray-500">
           Don’t have an account?{" "}
           <a href="/auth/signup" className="text-black font-medium">
-            Sign up
+            Sign up 
           </a>
         </div>
       </div>

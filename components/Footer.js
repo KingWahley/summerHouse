@@ -2,7 +2,7 @@ import Link from "next/link";
 
 export default function Footer() {
   return (
-<footer className="w-full border-t bg-black text-white md:bg-white md:text-gray-600">
+<footer className="w-full mt-20 border-t bg-black text-white md:bg-white md:text-gray-600">
       <div className="max-w-7xl mx-auto px-6 py-14">
         <div className="grid gap-10 md:grid-cols-4">
           <div>
@@ -77,17 +77,7 @@ export default function Footer() {
             © {new Date().getFullYear()} WebDevii. All rights reserved.
           </span>
 
-          <div className="flex gap-6">
-            <Link href="#" className="hover:text-black transition-colors">
-              Twitter
-            </Link>
-            <Link href="#" className="hover:text-black transition-colors">
-              Instagram
-            </Link>
-            <Link href="#" className="hover:text-black transition-colors">
-              LinkedIn
-            </Link>
-          </div>
+          
         </div>
       </div>
     </footer>
