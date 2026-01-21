@@ -1,91 +1,69 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-
-const steps = [
-  {
-    title: "Search & Discover",
-    text: "Find properties by location, price, type, and amenities using a fast, map-based search.",
-  },
-  {
-    title: "Connect & Inspect",
-    text: "Chat directly with verified owners or agents and book inspections on your schedule.",
-  },
-  {
-    title: "Close with Confidence",
-    text: "Transparent listings, moderation, and secure payments keep deals clean and predictable.",
-  },
-];
-
 export default function HowItWorks() {
-  const containerRef = useRef(null);
-  const [active, setActive] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (!containerRef.current) return;
-
-      const next = (active + 1) % steps.length;
-      const width = containerRef.current.offsetWidth;
-
-      containerRef.current.scrollTo({
-        left: width * next,
-        behavior: "smooth",
-      });
-
-      setActive(next);
-    }, 4000);
-
-    return () => clearInterval(interval);
-  }, [active]);
-
-  const handleScroll = () => {
-    const width = containerRef.current.offsetWidth;
-    const index = Math.round(containerRef.current.scrollLeft / width);
-    setActive(index);
-  };
-
   return (
-    <div id="Howitworks" className="bg-white border-t">
-      <div className="max-w-7xl mx-auto px-6 py-20">
-        <h2 className=" text-2xl md:text-3xl text-center md:text-left font-bold mb-12">How SummerHouse works</h2>
-
-        <div
-          ref={containerRef}
-          onScroll={handleScroll}
-          className="
-    no-scrollbar
-    flex overflow-x-auto scroll-smooth snap-x snap-mandatory
-    md:grid md:grid-cols-3 md:overflow-visible
-  "
-        >
-          {steps.map((step, i) => (
-            <div key={i} className="min-w-full snap-center md:min-w-0 px-1">
-              <Step {...step} />
-            </div>
-          ))}
+    <section className="py-10 bg-gray-50 sm:py-16 lg:py-16">
+      <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+        <div className="max-w-2xl mx-auto text-center">
+          <h2 className="text-3xl font-bold leading-tight text-black sm:text-4xl lg:text-5xl">
+            How does it work?
+          </h2>
+          <p className="max-w-lg mx-auto mt-4 text-base leading-relaxed text-gray-600">
+            Finding a home with SummerHouse is a seamless process
+          </p>
         </div>
 
-        <div className="flex justify-center gap-2 mt-6 md:hidden">
-          {steps.map((_, i) => (
-            <span
-              key={i}
-              className={`h-2 w-2 rounded-full transition ${
-                active === i ? "bg-black" : "bg-gray-300"
-              }`}
+        <div className="relative mt-12 lg:mt-20">
+          <div className="absolute inset-x-0 hidden xl:px-44 top-2 md:block md:px-20 lg:px-28">
+            <img
+              className="w-full"
+              src="https://cdn.rareblocks.xyz/collection/celebration/images/steps/2/curved-dotted-line.svg"
+              alt=""
             />
-          ))}
+          </div>
+
+          <div className="relative grid grid-cols-1 text-center gap-y-12 md:grid-cols-3 gap-x-12">
+            <div>
+              <div className="flex items-center justify-center w-16 h-16 mx-auto bg-white border-2 border-gray-200 rounded-full shadow">
+                <span className="text-xl font-semibold text-gray-700"> 1 </span>
+              </div>
+              <h3 className="mt-6 text-xl font-semibold leading-tight text-black md:mt-10">
+                Search & Discover
+              </h3>
+              <p className="mt-4 text-base text-gray-600">
+                Find properties by location, price, type, and amenities using a
+                fast, map-based search.
+              </p>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-center w-16 h-16 mx-auto bg-white border-2 border-gray-200 rounded-full shadow">
+                <span className="text-xl font-semibold text-gray-700"> 2 </span>
+              </div>
+              <h3 className="mt-6 text-xl font-semibold leading-tight text-black md:mt-10">
+                Connect & Inspect
+              </h3>
+              <p className="mt-4 text-base text-gray-600">
+                Chat directly with verified owners or agents and book
+                inspections on your schedule.
+              </p>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-center w-16 h-16 mx-auto bg-white border-2 border-gray-200 rounded-full shadow">
+                <span className="text-xl font-semibold text-gray-700"> 3 </span>
+              </div>
+              <h3 className="mt-6 text-xl font-semibold leading-tight text-black md:mt-10">
+                Close with Confidence
+              </h3>
+              <p className="mt-4 text-base text-gray-600">
+                Transparent listings, moderation, and secure payments keep deals
+                clean and predictable.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  );
-}
-
-function Step({ title, text }) {
-  return (
-    <div className="p-6">
-      <h3 className="font-semibold text-lg">{title}</h3>
-      <p className="mt-3 text-gray-600">{text}</p>
-    </div>
+    </section>
   );
 }

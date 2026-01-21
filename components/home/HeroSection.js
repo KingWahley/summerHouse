@@ -1,107 +1,136 @@
 "use client";
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { getSupabaseClient } from "@/lib/supabaseClient";
+import ListingCarousel from "@/components/listings/ListingCarousel";
+import { fetchPublicListings } from "@/lib/listings";
+import Slider from "react-slick";
+import Link from "next/link";
 
 export default function HeroSection() {
-  const router = useRouter();
-  const supabase = getSupabaseClient();
-  const [user, setUser] = useState(null);
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // Fetch public listings on mount
+  async function loadListings() {
+    setLoading(true);
+    try {
+      const data = await fetchPublicListings({ query: "", filters: {} });
+      // Limit to 4 listings
+      setResults(data.slice(0, 4));
+    } catch (err) {
+      console.error("Error fetching listings:", err);
+    }
+    setLoading(false);
+  }
 
   useEffect(() => {
-    checkUser();
+    loadListings();
   }, []);
 
-  async function checkUser() {
-    const {
-      data: { session },
-    } = await supabase.auth.getSession();
-    setUser(session?.user || null);
-  }
-
-  function handleClick(path) {
-    if (!user) {
-      router.push("/auth/login");
-      return;
-    }
-    router.push("/listings");
-  }
-
   return (
-    <section className="relative md:bg-[url('/assets/bghero.jpg')] bg-cover bg-center bg-fixed">
-      <div className="absolute inset-0 bg-white/70 md:bg-white/60 pointer-events-none"></div>
-      <div className="max-w-7xl mx-auto px-6 pb-20 pt-10 grid md:grid-cols-2 gap-16 items-center inset-0">
-        <div className="relative">
-          <h1 className="text-4xl md:text-5xl font-bold leading-tight">
-            Find, List, and Manage Property
-            <span className="block text-gray-500 mt-2">
-              Without the usual stress.
-            </span>
-          </h1>
+    <div>
+      <section
+        className="relative   bg-fixed bg-center bg-cover"
+        style={{ backgroundImage: "url('/assets/bghero.jpg')" }}
+      >
+        {" "}
+        <div className="relative z-10 bg-white/90   px-4 py-6 sm:py-16 sm:px-6 lg:py-24 xl:py-24 lg:flex items-center  gap-10">
+          <div className="lg:w-[50%] lg:pr-8 flex flex-col justify-center">
+            <div className="max-w-md mx-auto sm:max-w-lg lg:mx-0">
+              <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl">
+                Find, List and Manage Property{" "}
+                <span className="inline">
+                  <img
+                    className="inline w-auto h-8 sm:h-10 lg:h-12"
+                    src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/4/shape-1.svg"
+                    alt="shape-1"
+                  />
+                </span>{" "}
+                Without the usual stress{" "}
+                <span className="inline">
+                  <img
+                    className="inline w-auto h-8 sm:h-10 lg:h-11"
+                    src="https://landingfoliocom.imgix.net/store/collection/clarity-blog/images/hero/4/shape-2.svg"
+                    alt="shape-2"
+                  />
+                </span>
+              </h1>
+              <p className="mt-6 text-base font-normal leading-7 text-gray-900">
+                SummerHouse connects buyers, renters, property owners, and
+                agents on one secure platform — search verified listings, book
+                inspections, and close deals faster.
+              </p>
 
-          <p className="mt-6 text-lg text-gray-600 max-w-xl">
-            SummerHouse connects buyers, renters, property owners, and agents on
-            one secure platform — search verified listings, book inspections,
-            and close deals faster.
-          </p>
-
-          <div className="mt-8 flex flex-row gap-4">
-            <div className="mt-8 flex flex-row gap-4">
-              
-              <button
-                onClick={() => router.push("/listings")}
-                className="bg-black px-2 text-white text-sm md:px-6 py-3 rounded-md font-medium hover:opacity-90"
-              >
-                Browse Properties
-              </button>
-
-            
-              <button
-                onClick={() => {
-                  if (!user) {
-                    router.push("/auth/login"); 
-                    return;
-                  }
-                  router.push("/listings/new"); 
-                }}
-                className="border px-2 md:px-6 py-3 text-sm rounded-md font-medium hover:bg-white"
-              >
-                List Your Property
-              </button>
+              <p className="mt-8 text-base font-bold text-gray-900">
+                Search your desired location, price or house type
+              </p>
+              <form className="relative mt-4">
+                <div className="absolute transition-all duration-1000 opacity-30 inset-0 bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg filter group-hover:opacity-100 group-hover:duration-200"></div>
+                <div className="relative flex flex-col sm:flex-row gap-2">
+                  <div className="flex-1">
+                    <label htmlFor="" className="sr-only">
+                      search for listings
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="search for listings"
+                      className="block w-full px-4 py-3 sm:py-3.5 text-base font-medium text-gray-900 placeholder-gray-500 border border-gray-300 rounded-lg sm:rounded-l-lg sm:rounded-r-none sm:text-sm focus:ring-gray-900 focus:border-gray-900"
+                    />
+                  </div>
+                  <Link href="/listings">
+                    <button
+                      type="button"
+                      className="inline-flex items-center justify-center w-full sm:w-auto px-8 py-3 sm:text-sm text-base sm:py-3.5 font-semibold text-white transition-all duration-200 bg-gray-900 border border-transparent rounded-lg sm:rounded-r-lg sm:rounded-l-none hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                    >
+                      search
+                    </button>
+                  </Link>
+                </div>
+              </form>
             </div>
           </div>
-        </div>
 
-        <div className="relative hidden md:grid grid-cols-2 gap-6">
-          <Feature
-            title="Verified"
-            text="Owners, agents, and listings go through moderation and KYC."
-          />
-          <Feature
-            title="Secure"
-            text="Role-based access, protected routes, and database-level security."
-          />
-          <Feature
-            title="Smart"
-            text="AI-assisted listings, search, and moderation."
-          />
-          <Feature
-            title="Scalable"
-            text="Built to support agents, teams, and large inventories."
-          />
+          <div className="lg:max-w-xl lg:pl-8 lg:w-[50%] mt-8 lg:mt-0">
+            {" "}
+            {loading ? (
+              <div className="flex items-center justify-center py-10">
+                <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-black" />
+              </div>
+            ) : results.length === 0 ? (
+              <p className="text-center text-gray-500 py-10">
+                No listings found
+              </p>
+            ) : (
+              <Slider
+                dots={true}
+                infinite={results.length > 2}
+                speed={500}
+                slidesToShow={2}
+                slidesToScroll={2}
+                arrows={true}
+                autoplay={true}
+                autoplaySpeed={2500}
+                pauseOnHover={true}
+                responsive={[
+                  {
+                    breakpoint: 1024,
+                    settings: {
+                      slidesToShow: 1,
+                      slidesToScroll: 1,
+                    },
+                  },
+                ]}
+              >
+                {results.slice(0, 4).map((listing) => (
+                  <div key={listing.id} className="px-2">
+                    <ListingCarousel listings={[listing]} />
+                  </div>
+                ))}
+              </Slider>
+            )}
+          </div>
         </div>
-      </div>
-    </section>
-  );
-}
-
-function Feature({ title, text }) {
-  return (
-    <div className="bg-white/50 p-6 rounded-xl border backdrop-blur-sm">
-      <p className="text-3xl font-bold">{title}</p>
-      <p className="text-gray-700 mt-2">{text}</p>
+      </section>
     </div>
   );
 }
