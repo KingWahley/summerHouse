@@ -102,38 +102,30 @@ export default function HeroSection() {
                 dots={true}
                 infinite={results.length > 1}
                 speed={500}
-                slidesToShow={2} // desktop
-                slidesToScroll={2}
+                slidesToShow={2}
+                slidesToScroll={1}
                 arrows={true}
                 autoplay={true}
                 autoplaySpeed={2500}
                 pauseOnHover={true}
                 responsive={[
                   {
-                    breakpoint: 1024, // tablets
+                    breakpoint: 1024,
                     settings: {
                       slidesToShow: 1,
                       slidesToScroll: 1,
-                      arrows: true,
-                      centerMode: true,
-                      centerPadding: "40px", // space on left/right
-                    },
-                  },
-                  {
-                    breakpoint: 640, // mobile
-                    settings: {
-                      slidesToShow: 1,
-                      slidesToScroll: 1,
-                      arrows: false,
-                      centerMode: true,
-                      centerPadding: "20px", // tighter padding
+                      centerMode: true, // Centers the active slide
+                      centerPadding: "40px", // Set to "20px" or similar if you want to see edges of side cards
                     },
                   },
                 ]}
               >
                 {results.slice(0, 4).map((listing) => (
-                  <div key={listing.id} className="px-2 w-full">
-                    <ListingCarousel listings={[listing]} />
+                  <div key={listing.id} className="px-2 outline-none">
+                    {/* Ensure the inner component is centered and takes full width */}
+                    <div className="mx-auto w-full max-w-[95%] md:max-w-none">
+                      <ListingCarousel listings={[listing]} />
+                    </div>
                   </div>
                 ))}
               </Slider>
