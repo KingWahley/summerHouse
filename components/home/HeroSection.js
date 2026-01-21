@@ -9,6 +9,21 @@ import Link from "next/link";
 export default function HeroSection() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [slidesToShow, setSlidesToShow] = useState(2);
+
+  useEffect(() => {
+    function handleResize() {
+      if (window.innerWidth < 1024) {
+        setSlidesToShow(1); // Mobile: 1 slide
+      } else {
+        setSlidesToShow(2); // Desktop: 2 slides
+      }
+    }
+
+    handleResize(); // Initialize on mount
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   async function loadListings() {
     setLoading(true);
@@ -102,28 +117,18 @@ export default function HeroSection() {
                 dots={true}
                 infinite={results.length > 1}
                 speed={500}
-                slidesToShow={2}
+                slidesToShow={slidesToShow} // <-- use dynamic slidesToShow
                 slidesToScroll={1}
                 arrows={true}
                 autoplay={true}
                 autoplaySpeed={2500}
                 pauseOnHover={true}
-                responsive={[
-                  {
-                    breakpoint: 1024,
-                    settings: {
-                      slidesToShow: 1,
-                      slidesToScroll: 1,
-                      centerMode: true, // Centers the active slide
-                      centerPadding: "40px", // Set to "20px" or similar if you want to see edges of side cards
-                    },
-                  },
-                ]}
+                centerMode={slidesToShow === 1} // Center only on mobile
+                centerPadding="30px"
               >
                 {results.slice(0, 4).map((listing) => (
                   <div key={listing.id} className="px-2 outline-none">
-                    {/* Ensure the inner component is centered and takes full width */}
-                    <div className="mx-auto w-full max-w-[95%] md:max-w-none">
+                    <div className="w-full">
                       <ListingCarousel listings={[listing]} />
                     </div>
                   </div>
