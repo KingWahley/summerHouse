@@ -10,13 +10,11 @@ export default function HeroSection() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Fetch public listings on mount
   async function loadListings() {
     setLoading(true);
     try {
       const data = await fetchPublicListings({ query: "", filters: {} });
-      // Limit to 4 listings
-      setResults(data.slice(0, 4));
+      setResults(data.slice(0, 6));
     } catch (err) {
       console.error("Error fetching listings:", err);
     }
@@ -103,9 +101,9 @@ export default function HeroSection() {
             ) : (
               <Slider
                 dots={true}
-                infinite={results.length > 2}
+                infinite={results.length > 1} // at least 1 item
                 speed={500}
-                slidesToShow={2}
+                slidesToShow={2} // default for desktop
                 slidesToScroll={2}
                 arrows={true}
                 autoplay={true}
@@ -113,10 +111,18 @@ export default function HeroSection() {
                 pauseOnHover={true}
                 responsive={[
                   {
-                    breakpoint: 1024,
+                    breakpoint: 1024, // tablets
                     settings: {
                       slidesToShow: 1,
                       slidesToScroll: 1,
+                    },
+                  },
+                  {
+                    breakpoint: 640, // mobile
+                    settings: {
+                      slidesToShow: 1,
+                      slidesToScroll: 1,
+                      arrows: false, // optional: hide arrows on small screens
                     },
                   },
                 ]}
