@@ -88,8 +88,7 @@ export default function HeroSection() {
             </div>
           </div>
 
-          <div className="lg:max-w-xl lg:pl-8 lg:w-[50%] mt-8 lg:mt-0">
-            {" "}
+          <div className="w-full lg:max-w-xl lg:pl-8 lg:w-[50%] mt-8 lg:mt-0">
             {loading ? (
               <div className="flex items-center justify-center py-10">
                 <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-black" />
@@ -101,9 +100,9 @@ export default function HeroSection() {
             ) : (
               <Slider
                 dots={true}
-                infinite={results.length > 1} // at least 1 item
+                infinite={results.length > 1}
                 speed={500}
-                slidesToShow={2} // default for desktop
+                slidesToShow={2} // desktop
                 slidesToScroll={2}
                 arrows={true}
                 autoplay={true}
@@ -115,6 +114,9 @@ export default function HeroSection() {
                     settings: {
                       slidesToShow: 1,
                       slidesToScroll: 1,
+                      arrows: true,
+                      centerMode: true,
+                      centerPadding: "40px", // space on left/right
                     },
                   },
                   {
@@ -122,13 +124,15 @@ export default function HeroSection() {
                     settings: {
                       slidesToShow: 1,
                       slidesToScroll: 1,
-                      arrows: false, // optional: hide arrows on small screens
+                      arrows: false,
+                      centerMode: true,
+                      centerPadding: "20px", // tighter padding
                     },
                   },
                 ]}
               >
                 {results.slice(0, 4).map((listing) => (
-                  <div key={listing.id} className="px-2">
+                  <div key={listing.id} className="px-2 w-full">
                     <ListingCarousel listings={[listing]} />
                   </div>
                 ))}
