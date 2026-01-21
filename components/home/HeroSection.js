@@ -54,7 +54,7 @@ export default function HeroSection() {
         <div className="relative z-10 bg-white/90   px-4 py-6 sm:py-16 sm:px-6 lg:py-24 xl:py-24 lg:flex items-center  gap-10">
           <div className="lg:w-[50%] lg:pr-8 flex flex-col justify-center">
             <div className="max-w-md mx-auto sm:max-w-lg lg:mx-0">
-              <h1 className="text-3xl font-bold text-gray-900 sm:text-4xl lg:text-5xl">
+              <h1 className="text-3xl font-bold text-[#4478A6] sm:text-4xl lg:text-5xl">
                 Find, List and Manage Property{" "}
                 <span className="inline">
                   <img
@@ -72,17 +72,17 @@ export default function HeroSection() {
                   />
                 </span>
               </h1>
-              <p className="mt-6 text-base font-normal leading-7 text-gray-900">
+              <p className="mt-6 text-base font-normal leading-7 text-[#734440]">
                 SummerHouse connects buyers, renters, property owners, and
                 agents on one secure platform — search verified listings, book
                 inspections, and close deals faster.
               </p>
 
-              <p className="mt-8 text-base font-bold text-gray-900">
+              <p className="mt-8 text-base font-bold text-[#A64F03]">
                 Search your desired location, price or house type
               </p>
               <form className="relative mt-4">
-                <div className="absolute transition-all duration-1000 opacity-30 inset-0 bg-gradient-to-r from-[#44BCFF] via-[#FF44EC] to-[#FF675E] rounded-xl blur-lg filter group-hover:opacity-100 group-hover:duration-200"></div>
+                <div className="absolute transition-all duration-1000 opacity-30 inset-0 bg-gradient-to-r from-[#4478A6] via-[#F28705] to-[#A64F03] rounded-xl blur-lg filter group-hover:opacity-100 group-hover:duration-200"></div>
                 <div className="relative flex flex-col sm:flex-row gap-2">
                   <div className="flex-1">
                     <label htmlFor="" className="sr-only">
@@ -91,13 +91,13 @@ export default function HeroSection() {
                     <input
                       type="text"
                       placeholder="search for listings"
-                      className="block w-full px-4 py-3 sm:py-3.5 text-base font-medium text-gray-900 placeholder-gray-500 border border-gray-300 rounded-lg sm:rounded-l-lg sm:rounded-r-none sm:text-sm focus:ring-gray-900 focus:border-gray-900"
+                      className="block w-full px-4 py-3 sm:py-3.5 text-base font-medium text-[#4478A6] placeholder-[#E9EFF2] border border-[#A64F03] rounded-lg sm:rounded-l-lg sm:rounded-r-none sm:text-sm focus:ring-[#4478A6] focus:border-[#4478A6]"
                     />
                   </div>
                   <Link href="/listings">
                     <button
                       type="button"
-                      className="inline-flex items-center justify-center w-full sm:w-auto px-8 py-3 sm:text-sm text-base sm:py-3.5 font-semibold text-white transition-all duration-200 bg-gray-900 border border-transparent rounded-lg sm:rounded-r-lg sm:rounded-l-none hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+                      className="inline-flex items-center justify-center w-full sm:w-auto px-8 py-3 sm:text-sm text-base sm:py-3.5 font-semibold text-[#E9EFF2] transition-all duration-200 bg-[#F28705] border border-transparent rounded-lg sm:rounded-r-lg sm:rounded-l-none hover:bg-[#A64F03] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#F28705]"
                     >
                       search
                     </button>

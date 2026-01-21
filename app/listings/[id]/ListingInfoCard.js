@@ -37,39 +37,39 @@ export default function ListingInfoCard({ listing }) {
   return (
     <section className="relative z-10">
       <div
-        className="bg-white rounded-t-[28px] md:rounded-2xl 
-        px-6 pt-6 pb-8 md:p-10 
-        -mt-6 md:mt-0
-        max-w-5xl mx-auto
-        md:shadow-sm"
+        className="bg-[#E9EFF2] md:bg-white rounded-t-[28px] md:rounded-2xl 
+      px-6 pt-6 pb-8 md:p-10 
+      -mt-6 md:mt-0
+      max-w-5xl mx-auto
+      md:shadow-sm border border-[#A64F03] md:border-white"
       >
         <div className="mb-6">
-          <h1 className="text-lg md:text-2xl font-semibold text-gray-900">
+          <h1 className="text-lg md:text-2xl font-semibold text-[#4478A6]">
             {listing.title}
           </h1>
 
           <div className="flex items-center justify-between mt-2">
-            <p className="text-sm md:text-base text-teal-500">
+            <p className="text-sm md:text-base text-[#734440]">
               {listing.city} - {listing.state}, {listing.country}
             </p>
 
-            <div className="flex items-center gap-1 text-sm text-gray-500">
+            <div className="flex items-center gap-1 text-sm text-[#A64F03]">
               ★ <span className="font-medium">4.7</span>
             </div>
           </div>
         </div>
 
         <div className="mb-6">
-          <p className="text-xl md:text-3xl font-semibold text-pink-400">
+          <p className="text-xl md:text-3xl font-semibold text-[#F28705]">
             ₦{Number(listing.price).toLocaleString()}
             {listing.listing_type === "rent" && (
-              <span className="text-sm md:text-base font-medium text-gray-400">
+              <span className="text-sm md:text-base font-medium text-[#734440]">
                 {" "}
                 / year
               </span>
             )}
             {listing.listing_type === "sale" && (
-              <span className="text-sm md:text-base font-medium text-gray-400">
+              <span className="text-sm md:text-base font-medium text-[#734440]">
                 {" "}
                 (outright)
               </span>
@@ -77,13 +77,13 @@ export default function ListingInfoCard({ listing }) {
           </p>
         </div>
 
-        <p className="text-sm md:text-base text-gray-500 leading-relaxed mb-8 max-w-3xl">
+        <p className="text-sm md:text-base text-[#734440] leading-relaxed mb-8 max-w-3xl">
           {listing.description}
         </p>
 
         {facilities.length > 0 && (
           <div className="mb-8">
-            <p className="text-sm font-semibold text-gray-800 mb-4 lowercase">
+            <p className="text-sm font-semibold text-[#4478A6] mb-4 lowercase">
               facilities
             </p>
 
@@ -97,7 +97,7 @@ export default function ListingInfoCard({ listing }) {
 
         {listing.amenities?.length > 0 && (
           <div className="mb-10">
-            <p className="text-sm font-semibold text-gray-800 mb-4 lowercase">
+            <p className="text-sm font-semibold text-[#4478A6] mb-4 lowercase">
               amenities
             </p>
 
@@ -110,7 +110,7 @@ export default function ListingInfoCard({ listing }) {
           </div>
         )}
 
-        <div className="pt-6 border-t">
+        <div className="pt-6 border-t border-[#A64F03]">
           <ContactAgent listingId={listing.id} agentId={listing.owner_id} />
         </div>
       </div>
@@ -126,4 +126,3 @@ function Facility({ Icon, label }) {
     </div>
   );
 }
-

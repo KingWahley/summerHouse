@@ -5,7 +5,7 @@ export default function ListingCard({ listing }) {
   return (
     <Link
       href={`/listings/${listing.id}`}
-      className="group block bg-white rounded-t-2xl overflow-hidden border hover:shadow-md transition"
+      className="group block bg-[#E9EFF2] rounded-t-2xl overflow-hidden border border-[#A64F03] hover:shadow-md transition"
     >
       <div className="relative">
         <img
@@ -13,38 +13,34 @@ export default function ListingCard({ listing }) {
           alt={listing.title}
           className="w-full h-48 object-cover"
         />
-
-        {/* <button
-          onClick={(e) => e.preventDefault()}
-          className="absolute top-3 right-3 bg-white/90 backdrop-blur rounded-full p-2 shadow-sm"
-        >
-          <Heart size={16} className="text-gray-700" />
-        </button> */}
       </div>
 
       <div className="p-4 space-y-2">
         <div className="flex flex-row justify-between">
-          <p className="text-left text-xl font-semibold ">
+          <p className="text-left text-xl font-semibold text-[#4478A6]">
             ₦{Number(listing.price).toLocaleString()}
             {listing.listing_type === "rent" && (
-              <span className="text-sm font-medium text-gray-400"> / year</span>
+              <span className="text-sm font-medium text-[#734440]">
+                {" "}
+                / year
+              </span>
             )}
             {listing.listing_type === "sale" && (
-              <span className="text-sm font-medium text-gray-400">
+              <span className="text-sm font-medium text-[#734440]">
                 {" "}
                 (outright)
               </span>
             )}
           </p>
-          <p className=" text-xl font-semibold text-pink-400">
+          <p className="text-xl font-semibold text-[#F28705]">
             {listing.listing_type === "rent" && (
-              <span className="text-sm font-medium text-gray-400">
+              <span className="text-sm font-medium text-[#734440]">
                 {" "}
                 for rent
               </span>
             )}
             {listing.listing_type === "sale" && (
-              <span className="text-sm font-medium text-gray-400">
+              <span className="text-sm font-medium text-[#734440]">
                 {" "}
                 for sale
               </span>
@@ -52,11 +48,11 @@ export default function ListingCard({ listing }) {
           </p>
         </div>
 
-        <p className="text-sm text-gray-500 truncate">
+        <p className="text-sm text-[#734440] truncate">
           {listing.city}, {listing.state}
         </p>
 
-        <div className="flex items-center gap-4 text-xs text-gray-600 mt-2">
+        <div className="flex items-center gap-4 text-xs text-[#A64F03] mt-2">
           {listing.bedrooms > 0 && (
             <span className="flex items-center gap-1">
               <BedDouble size={14} />
