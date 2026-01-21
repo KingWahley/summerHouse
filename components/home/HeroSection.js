@@ -9,14 +9,18 @@ import Link from "next/link";
 export default function HeroSection() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+
   const [slidesToShow, setSlidesToShow] = useState(2);
+  const [autoplay, setAutoplay] = useState(true);
 
   useEffect(() => {
     function handleResize() {
       if (window.innerWidth < 1024) {
         setSlidesToShow(1); // Mobile: 1 slide
+        setAutoplay(false); // Mobile: no autoplay
       } else {
         setSlidesToShow(2); // Desktop: 2 slides
+        setAutoplay(true); // Desktop: autoplay
       }
     }
 
@@ -117,10 +121,10 @@ export default function HeroSection() {
                 dots={true}
                 infinite={results.length > 1}
                 speed={500}
-                slidesToShow={slidesToShow} // <-- use dynamic slidesToShow
+                slidesToShow={slidesToShow} // Dynamic slides
                 slidesToScroll={1}
                 arrows={true}
-                autoplay={true}
+                autoplay={autoplay} // Dynamic autoplay
                 autoplaySpeed={2500}
                 pauseOnHover={true}
                 centerMode={slidesToShow === 1} // Center only on mobile
