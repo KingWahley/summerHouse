@@ -1,4 +1,6 @@
 
+@import url("https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,4 +12,50 @@
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;                
+}
+
+.dashboard-shell {
+  font-family: "Manrope", "Segoe UI", sans-serif;
+}
+
+.dashboard-shell h1,
+.dashboard-shell h2,
+.dashboard-shell h3 {
+  font-family: "Fraunces", "Times New Roman", serif;
+}
+
+.home-shell {
+  font-family: "Manrope", "Segoe UI", sans-serif;
+}
+
+.home-shell h1,
+.home-shell h2,
+.home-shell h3 {
+  font-family: "Fraunces", "Times New Roman", serif;
+}
+
+/* Slick carousel stability overrides */
+.slick-slider {
+  width: 100%;
+}
+
+.slick-list {
+  overflow: hidden;
+}
+
+.slick-track {
+  display: flex !important;
+  align-items: stretch;
+}
+
+.slick-slide {
+  height: auto;
+}
+
+.slick-slide > div {
+  height: 100%;
+}
+
+.hero-slider .slick-slide {
+  height: 100%;
 }

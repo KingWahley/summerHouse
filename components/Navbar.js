@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/useAuth";
-import { Menu, X, Mail } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { getSupabaseClient } from "@/lib/supabaseClient";
 import Image from "next/image";
 import { useUnreadMessages } from "@/components/useUnreadMessages";
@@ -25,86 +25,94 @@ export default function Navbar() {
     pathname === path ? "text-black" : "text-gray-500";
 
   return (
-    <nav className="w-full border-b bg-white sticky top-0 z-50">
-      <div className="max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
-        <Link href="/">
-          <Image
+    <nav className="w-full sticky top-0 z-50 backdrop-blur-xl bg-white/80 border-b border-[#ede7da]">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+        <Link href="/" className="flex items-center gap-3">
+          {/* <Image
             src="/assets/summerlogo.png"
-            alt="summerlogo Logo"
-            width={60}
-            height={40}
-          />
+            alt="SummerHouse Logo"
+            width={52}
+            height={36}
+          /> */}
+          <span className="hidden sm:block text-sm uppercase tracking-[0.3em] text-[#9b9489]">
+            SummerHouse
+          </span>
         </Link>
 
-        <div className="hidden md:flex gap-6 text-sm font-medium items-center">
-          <Link href="/" className={isActive("/")}>
+        <div className="hidden lg:flex items-center gap-2 rounded-full border border-[#e5ddcf] bg-white/70 px-4 py-2 text-sm font-medium text-[#5b5a56]">
+          <Link href="/" className={`px-3 py-1.5 rounded-full ${isActive("/")}`}>
             Home
           </Link>
-          <Link href="/listings" className={isActive("/listings")}>
+          <Link
+            href="/listings"
+            className={`px-3 py-1.5 rounded-full ${isActive("/listings")}`}
+          >
             Listings
           </Link>
 
           {user && (role === "agent" || role === "owner") && (
             <Link
               href="/listings/create"
-              className={isActive("/listings/create")}
+              className={`px-3 py-1.5 rounded-full ${isActive("/listings/create")}`}
             >
               Add Property
             </Link>
           )}
+
           {user && (role === "agent" || role === "owner") && (
-
-          <Link href="/messages" className="relative">
-            <p className={isActive("/messages")} >Messages</p>
-
-            {unread > 0 && (
-              <span
-                className="
-            absolute -top-2 -right-2
-            min-w-[18px] h-[18px]
-            px-1
-            flex items-center justify-center
-            text-[10px] font-semibold
-            rounded-full
-            bg-pink-500 text-white
-          "
-              >
-                {unread > 9 ? "9+" : unread}
-              </span>
-            )}
-          </Link>
-            )}
+            <Link href="/messages" className="relative px-3 py-1.5 rounded-full">
+              <span className={isActive("/messages")}>Messages</span>
+              {unread > 0 && (
+                <span className="absolute -top-1 -right-1 min-w-[18px] h-[18px] px-1 flex items-center justify-center text-[10px] font-semibold rounded-full bg-rose-500 text-white">
+                  {unread > 9 ? "9+" : unread}
+                </span>
+              )}
+            </Link>
+          )}
 
           {user && (
-            <Link href="/dashboard" className={isActive("/dashboard")}>
+            <Link
+              href="/dashboard"
+              className={`px-3 py-1.5 rounded-full ${isActive("/dashboard")}`}
+            >
               Dashboard
             </Link>
           )}
 
           {user && role === "admin" && (
-            <Link href="/admin" className={isActive("/admin")}>
+            <Link
+              href="/admin"
+              className={`px-3 py-1.5 rounded-full ${isActive("/admin")}`}
+            >
               Admin
             </Link>
           )}
         </div>
 
-        <div className="hidden md:flex items-center gap-4 text-sm">
+        <div className="hidden lg:flex items-center gap-3 text-sm">
           {loading ? null : !user ? (
             <>
-              <Link href="/auth/login">Login</Link>
+              <Link
+                href="/auth/login"
+                className="text-[#5b5a56] hover:text-[#2b2a27]"
+              >
+                Login
+              </Link>
               <Link
                 href="/auth/signup"
-                className="bg-black text-white px-4 py-2 rounded-md"
+                className="rounded-full bg-[#2b2a27] text-white px-4 py-2 font-semibold hover:bg-[#1c1b19]"
               >
                 Sign up
               </Link>
             </>
           ) : (
             <>
-              <span className="text-gray-500">{user.email}</span>
+              <span className="text-xs uppercase tracking-[0.2em] text-[#9b9489]">
+                {user.email}
+              </span>
               <button
                 onClick={handleLogout}
-                className="border px-4 py-2 rounded-md"
+                className="rounded-full border border-[#e5ddcf] px-4 py-2 text-[#5b5a56] hover:border-[#cfc6b8] hover:text-[#2b2a27]"
               >
                 Logout
               </button>
@@ -114,69 +122,81 @@ export default function Navbar() {
 
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="md:hidden"
+          className="lg:hidden rounded-full border border-[#e5ddcf] p-2 text-[#2b2a27]"
           aria-label="Toggle menu"
         >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          {mobileOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
       {mobileOpen && (
-        <div className="md:hidden border-t bg-white px-6 py-4 space-y-4 text-sm font-medium">
-          <Link href="/" className="block" onClick={() => setMobileOpen(false)}>
-            Home
-          </Link>
-          <Link
-            href="/listings"
-            className="block"
-            onClick={() => setMobileOpen(false)}
-          >
-            Listings
-          </Link>
-
-          {user && (role === "agent" || role === "owner") && (
+        <div className="lg:hidden border-t border-[#ede7da] bg-white/95 px-6 py-4 text-sm">
+          <div className="grid gap-3">
+            <Link href="/" className="py-2" onClick={() => setMobileOpen(false)}>
+              Home
+            </Link>
             <Link
-              href="/listings/create"
-              className="block"
+              href="/listings"
+              className="py-2"
               onClick={() => setMobileOpen(false)}
             >
-              Add Property
+              Listings
             </Link>
-          )}
 
-          {user && (
-            <Link
-              href="/dashboard"
-              className="block"
-              onClick={() => setMobileOpen(false)}
-            >
-              Dashboard
-            </Link>
-          )}
+            {user && (role === "agent" || role === "owner") && (
+              <Link
+                href="/listings/create"
+                className="py-2"
+                onClick={() => setMobileOpen(false)}
+              >
+                Add Property
+              </Link>
+            )}
 
-          {user && role === "admin" && (
-            <Link
-              href="/admin"
-              className="block"
-              onClick={() => setMobileOpen(false)}
-            >
-              Admin
-            </Link>
-          )}
+            {user && (role === "agent" || role === "owner") && (
+              <Link
+                href="/messages"
+                className="py-2"
+                onClick={() => setMobileOpen(false)}
+              >
+                Messages
+              </Link>
+            )}
 
-          <div className="pt-4 border-t space-y-3">
+            {user && (
+              <Link
+                href="/dashboard"
+                className="py-2"
+                onClick={() => setMobileOpen(false)}
+              >
+                Dashboard
+              </Link>
+            )}
+
+            {user && role === "admin" && (
+              <Link
+                href="/admin"
+                className="py-2"
+                onClick={() => setMobileOpen(false)}
+              >
+                Admin
+              </Link>
+            )}
+          </div>
+
+          <div className="mt-5 pt-4 border-t border-[#ede7da] flex flex-col gap-3">
             {!user ? (
               <>
                 <Link
                   href="/auth/login"
-                  className="block"
+                  className="py-2"
                   onClick={() => setMobileOpen(false)}
                 >
                   Login
                 </Link>
                 <Link
                   href="/auth/signup"
-                  className="block bg-black text-white text-center py-2 rounded-md"
+                  className="rounded-full bg-[#2b2a27] text-white text-center py-2 font-semibold"
                   onClick={() => setMobileOpen(false)}
                 >
                   Sign up
@@ -184,10 +204,12 @@ export default function Navbar() {
               </>
             ) : (
               <>
-                <span className="block text-gray-500">{user.email}</span>
+                <span className="text-xs uppercase tracking-[0.2em] text-[#9b9489]">
+                  {user.email}
+                </span>
                 <button
                   onClick={handleLogout}
-                  className="w-full border py-2 rounded-md"
+                  className="rounded-full border border-[#e5ddcf] py-2 text-[#5b5a56]"
                 >
                   Logout
                 </button>

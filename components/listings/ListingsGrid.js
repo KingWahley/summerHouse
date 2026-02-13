@@ -3,17 +3,22 @@ import ListingCard from "./ListingCard";
 export default function ListingsGrid({ listings }) {
   if (listings.length === 0) {
     return (
-      <div className=" z-50 flex items-center justify-center bg-white/70 backdrop-blur-sm">
-        <div className="flex flex-col items-center gap-3">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-black" />
-          <p className="text-sm text-gray-600">{""}</p>
-        </div>
+      <div className="rounded-3xl border border-[#e7dfd2] bg-white/70 p-12 text-center">
+        <p className="text-sm uppercase tracking-[0.2em] text-[#9b9489]">
+          No results
+        </p>
+        <h3 className="text-2xl font-semibold text-[#2b2a27] mt-3">
+          We could not find listings that match those filters.
+        </h3>
+        <p className="text-sm text-[#5b5a56] mt-3">
+          Try a broader search or clear a few filters.
+        </p>
       </div>
     );
   }
 
   return (
-    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
       {listings.map((listing) => (
         <ListingCard key={listing.id} listing={listing} />
       ))}

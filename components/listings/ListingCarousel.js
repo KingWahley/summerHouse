@@ -1,6 +1,6 @@
 import ListingCard from "./ListingCard";
 
-export default function ListingCarousel({ listings }) {
+export default function ListingCarousel({ listings, className = "" }) {
   if (listings.length === 0) {
     return (
       <div className=" z-50 flex items-center justify-center bg-white/70 backdrop-blur-sm">
@@ -13,7 +13,7 @@ export default function ListingCarousel({ listings }) {
   }
 
   return (
-    <div className="flex flex-row ">
+    <div className={`w-full ${className}`}>
       {listings.map((listing) => (
         <ListingCard key={listing.id} listing={listing} />
       ))}

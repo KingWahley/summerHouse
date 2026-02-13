@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/lib/useAuth";
@@ -29,7 +29,7 @@ export default function BuyerDashboard() {
     }
 
     fetchAll();
-  }, [loading, user, role]);
+  }, [loading, user, role, router]);
 
   async function fetchAll() {
     const supabase = getSupabaseClient();
@@ -74,139 +74,189 @@ export default function BuyerDashboard() {
     setUnreadMessages(count || 0);
   }
 
+  const stats = useMemo(() => {
+    return [
+      {
+        label: "Saved Properties",
+        value: saved.length,
+        href: "/saved",
+        helper: "Shortlist your favorites"
+      },
+      {
+        label: "Inspection Requests",
+        value: bookings.length,
+        href: "/bookings",
+        helper: "Track upcoming visits"
+      },
+      {
+        label: "Unread Messages",
+        value: unreadMessages,
+        href: "/messages",
+        helper: "Stay on top of replies"
+      }
+    ];
+  }, [saved.length, bookings.length, unreadMessages]);
+
   if (loading || dataLoading) {
     return (
-      <div className="p-10 text-gray-500">
-        Loading dashboard…
+      <div className="min-h-[70vh] flex items-center justify-center text-slate-500">
+        Loading dashboard...
       </div>
     );
   }
 
   return (
-    <div className="max-w-7xl mx-auto px-6 py-10">
-      <h1 className="text-3xl font-bold mb-8">
-        Buyer Dashboard
-      </h1>
+    <div className="dashboard-shell min-h-screen bg-gradient-to-b from-[#f8f4eb] via-[#f6f6f2] to-white">
+      <div className="max-w-7xl mx-auto px-6 py-12">
+        <header className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-2xl">
+            <p className="text-xs uppercase tracking-[0.3em] text-slate-500">
+              Buyer Dashboard
+            </p>
+            <h1 className="text-4xl sm:text-5xl font-semibold text-slate-900 mt-3">
+              Find your next place with confidence.
+            </h1>
+            <p className="text-base text-slate-600 mt-4">
+              Keep your saved homes, inspection requests, and conversations in
+              one calm, organized space.
+            </p>
+          </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-        <QuickCard
-          title="Saved Properties"
-          value={saved.length}
-          href="/saved"
-        />
-        <QuickCard
-          title="Inspection Requests"
-          value={bookings.length}
-          href="/bookings"
-        />
-        <QuickCard
-          title="Unread Messages"
-          value={unreadMessages}
-          href="/messages"
-        />
-      </div>
-
-      <Section
-        title="Recently Saved"
-        href="/saved"
-        emptyText="You haven’t saved any properties yet."
-      >
-        {saved.map(item => (
-          <div
-            key={item.listing_id}
-            className="flex justify-between items-center border rounded-lg p-4"
-          >
-            <div>
-              <p className="font-medium truncate">
-                {item.listings?.title}
-              </p>
-              <p className="text-sm text-gray-500">
-                ₦{Number(item.listings?.price).toLocaleString()}
-              </p>
-            </div>
-
+          <div className="flex flex-wrap gap-3">
             <Link
-              href={`/listings/${item.listing_id}`}
-              className="text-sm font-medium hover:underline"
+              href="/listings"
+              className="rounded-full bg-slate-900 text-white px-5 py-2 text-sm font-medium shadow-sm hover:bg-slate-800 transition"
             >
-              View
+              Browse listings
+            </Link>
+            <Link
+              href="/messages"
+              className="rounded-full border border-slate-300 bg-white/70 px-5 py-2 text-sm font-medium text-slate-700 hover:border-slate-400 transition"
+            >
+              Open inbox
             </Link>
           </div>
-        ))}
-      </Section>
+        </header>
 
-      <Section
-        title="Inspection Requests"
-        href="/bookings"
-        emptyText="No inspection requests yet."
-      >
-        {bookings.map(b => (
-          <div
-            key={b.id}
-            className="flex justify-between items-center border rounded-lg p-4"
+        <div className="grid gap-4 mt-10 sm:grid-cols-2 lg:grid-cols-3">
+          {stats.map((stat) => (
+            <QuickCard key={stat.label} {...stat} />
+          ))}
+        </div>
+
+        <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-6 mt-10">
+          <Section
+            title="Recently Saved"
+            href="/saved"
+            emptyText="You have not saved any properties yet."
           >
-            <div>
-              <p className="font-medium truncate">
-                {b.listings?.title}
-              </p>
-              <p className="text-xs text-gray-500">
-                {new Date(b.date).toLocaleDateString()}
-              </p>
-            </div>
+            {saved.map((item) => (
+              <div
+                key={item.listing_id}
+                className="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white/80 p-4 shadow-[0_10px_30px_rgba(15,23,42,0.06)]"
+              >
+                <div>
+                  <p className="font-medium text-slate-900 truncate">
+                    {item.listings?.title}
+                  </p>
+                  <p className="text-sm text-slate-500">
+                    NGN {Number(item.listings?.price).toLocaleString()}
+                  </p>
+                </div>
 
-            <StatusBadge status={b.status} />
-          </div>
-        ))}
-      </Section>
+                <Link
+                  href={`/listings/${item.listing_id}`}
+                  className="text-sm font-semibold text-slate-700 hover:text-slate-900"
+                >
+                  View
+                </Link>
+              </div>
+            ))}
+          </Section>
+
+          <Section
+            title="Inspection Requests"
+            href="/bookings"
+            emptyText="No inspection requests yet."
+          >
+            {bookings.map((booking) => (
+              <div
+                key={booking.id}
+                className="flex items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-white/80 p-4"
+              >
+                <div>
+                  <p className="font-medium text-slate-900 truncate">
+                    {booking.listings?.title}
+                  </p>
+                  <p className="text-xs text-slate-500 mt-1">
+                    {new Date(booking.date).toLocaleDateString()}
+                  </p>
+                </div>
+
+                <StatusBadge status={booking.status} />
+              </div>
+            ))}
+          </Section>
+        </div>
+      </div>
     </div>
   );
 }
 
-
-function QuickCard({ title, value, href }) {
+function QuickCard({ label, value, href, helper }) {
   return (
     <Link
       href={href}
-      className="bg-white border rounded-xl p-6 hover:shadow-sm transition"
+      className="group rounded-2xl border border-slate-200 bg-white/80 p-6 shadow-[0_10px_30px_rgba(15,23,42,0.06)] transition hover:-translate-y-1 hover:border-slate-300"
     >
-      <p className="text-sm text-gray-500">{title}</p>
-      <p className="text-3xl font-bold mt-2">{value}</p>
+      <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+        {label}
+      </p>
+      <p className="text-3xl font-semibold text-slate-900 mt-3">{value}</p>
+      <p className="text-sm text-slate-500 mt-2">{helper}</p>
+      <div className="mt-5 text-sm font-medium text-slate-700 group-hover:text-slate-900">
+        View details
+      </div>
     </Link>
   );
 }
 
 function Section({ title, href, emptyText, children }) {
+  const hasItems = useMemo(() => children && children.length > 0, [children]);
+
   return (
-    <div className="bg-white border rounded-xl p-6 mb-8">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="font-semibold text-lg">{title}</h2>
+    <section className="rounded-3xl border border-slate-200 bg-white/70 p-6 shadow-[0_15px_40px_rgba(15,23,42,0.08)]">
+      <div className="flex items-center justify-between mb-5">
+        <h2 className="text-lg font-semibold text-slate-900">{title}</h2>
         <Link
           href={href}
-          className="text-sm font-medium hover:underline"
+          className="text-sm font-medium text-slate-600 hover:text-slate-900"
         >
           View all
         </Link>
       </div>
 
-      {children.length === 0 ? (
-        <p className="text-sm text-gray-500">{emptyText}</p>
+      {hasItems ? (
+        <div className="space-y-4">{children}</div>
       ) : (
-        <div className="space-y-3">{children}</div>
+        <p className="text-sm text-slate-500">{emptyText}</p>
       )}
-    </div>
+    </section>
   );
 }
 
 function StatusBadge({ status }) {
   const styles = {
-    pending: "bg-yellow-100 text-yellow-800",
-    approved: "bg-green-100 text-green-700",
-    rejected: "bg-red-100 text-red-700"
+    pending: "bg-amber-100 text-amber-800",
+    approved: "bg-emerald-100 text-emerald-700",
+    rejected: "bg-rose-100 text-rose-700"
   };
 
   return (
     <span
-      className={`text-xs px-2 py-1 rounded-md font-medium ${styles[status]}`}
+      className={`text-xs px-3 py-1 rounded-full font-semibold ${
+        styles[status] || "bg-slate-100 text-slate-600"
+      }`}
     >
       {status}
     </span>
