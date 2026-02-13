@@ -166,7 +166,7 @@ export default function AgentDashboard() {
           ))}
         </div>
 
-        <section className="mt-10 rounded-3xl border border-slate-200 bg-white/80 p-6 shadow-[0_20px_45px_rgba(15,23,42,0.08)]">
+        <section className="mt-10 rounded-3xl border border-slate-200 bg-white/80 p-6 shadow-[0_20px_45px_rgba(15,23,42,0.08)] overflow-hidden">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between mb-6">
             <div>
               <h2 className="text-xl font-semibold text-slate-900">
@@ -197,11 +197,11 @@ export default function AgentDashboard() {
               </Link>
             </div>
           ) : (
-            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 min-w-0">
               {listings.map((listing) => (
                 <div
                   key={listing.id}
-                  className="rounded-2xl border border-slate-200 bg-white p-5 flex flex-col justify-between shadow-[0_12px_30px_rgba(15,23,42,0.08)]"
+                  className="rounded-2xl border border-slate-200 bg-white p-5 flex flex-col justify-between shadow-[0_12px_30px_rgba(15,23,42,0.08)] min-w-0"
                 >
                   <div>
                     <div className="flex items-start justify-between gap-4">
