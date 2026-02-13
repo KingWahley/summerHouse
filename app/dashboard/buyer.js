@@ -144,6 +144,35 @@ export default function BuyerDashboard() {
           ))}
         </div>
 
+        {saved.length === 0 && bookings.length === 0 && unreadMessages === 0 && (
+          <div className="mt-8 rounded-3xl border border-slate-200 bg-white/80 p-6 text-center shadow-[0_15px_40px_rgba(15,23,42,0.08)]">
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-500">
+              Nothing yet
+            </p>
+            <h2 className="text-2xl font-semibold text-slate-900 mt-3">
+              Your dashboard is empty.
+            </h2>
+            <p className="text-sm text-slate-500 mt-2">
+              Start browsing listings to save homes, book inspections, and
+              message agents.
+            </p>
+            <div className="mt-5 flex flex-wrap justify-center gap-3">
+              <Link
+                href="/listings"
+                className="rounded-full bg-slate-900 text-white px-5 py-2 text-sm font-medium shadow-sm hover:bg-slate-800 transition"
+              >
+                Explore listings
+              </Link>
+              <Link
+                href="/messages"
+                className="rounded-full border border-slate-300 bg-white/70 px-5 py-2 text-sm font-medium text-slate-700 hover:border-slate-400 transition"
+              >
+                View messages
+              </Link>
+            </div>
+          </div>
+        )}
+
         <div className="grid lg:grid-cols-[1.2fr_0.8fr] gap-6 mt-10">
           <Section
             title="Recently Saved"

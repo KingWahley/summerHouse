@@ -107,12 +107,17 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <span className="text-xs uppercase tracking-[0.2em] text-[#9b9489]">
-                {user.email}
-              </span>
+              <div className="flex items-center gap-3 rounded-full border border-[#e5ddcf] bg-white/80 px-3 py-2">
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#2b2a27] text-white text-xs font-semibold">
+                  {user.email?.[0]?.toUpperCase() || "U"}
+                </div>
+                <span className="text-xs uppercase tracking-[0.2em] text-[#9b9489]">
+                  {user.email}
+                </span>
+              </div>
               <button
                 onClick={handleLogout}
-                className="rounded-full border border-[#e5ddcf] px-4 py-2 text-[#5b5a56] hover:border-[#cfc6b8] hover:text-[#2b2a27]"
+                className="rounded-full bg-[#2b2a27] px-4 py-2 text-white text-sm font-semibold hover:bg-[#1c1b19]"
               >
                 Logout
               </button>
@@ -209,7 +214,7 @@ export default function Navbar() {
                 </span>
                 <button
                   onClick={handleLogout}
-                  className="rounded-full border border-[#e5ddcf] py-2 text-[#5b5a56]"
+                  className="rounded-full bg-[#2b2a27] py-2 text-white text-sm font-semibold"
                 >
                   Logout
                 </button>
