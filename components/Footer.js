@@ -41,46 +41,8 @@ export default function Footer() {
             </ul>
           </div>
 
-          <div>
-            <h4 className="text-sm uppercase tracking-[0.25em] text-[#c2b8aa]">
-              Company
-            </h4>
-            <ul className="mt-4 space-y-3 text-sm">
-              <li>
-                <Link href="/about" className="hover:text-white">
-                  About
-                </Link>
-              </li>
-              <li>
-                <Link href="/contact" className="hover:text-white">
-                  Contact
-                </Link>
-              </li>
-              <li>
-                <Link href="/careers" className="hover:text-white">
-                  Careers
-                </Link>
-              </li>
-            </ul>
-          </div>
+          
 
-          <div>
-            <h4 className="text-sm uppercase tracking-[0.25em] text-[#c2b8aa]">
-              Legal
-            </h4>
-            <ul className="mt-4 space-y-3 text-sm">
-              <li>
-                <Link href="/privacy" className="hover:text-white">
-                  Privacy Policy
-                </Link>
-              </li>
-              <li>
-                <Link href="/terms" className="hover:text-white">
-                  Terms of Service
-                </Link>
-              </li>
-            </ul>
-          </div>
         </div>
 
         <div className="mt-12 pt-6 border-t border-[#3a3530] flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-[#bdb5a9]">
