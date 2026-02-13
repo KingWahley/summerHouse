@@ -1,33 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import ListingCarousel from "@/components/listings/ListingCarousel";
 import { fetchPublicListings } from "@/lib/listings";
-import Slider from "react-slick";
 import Link from "next/link";
 
 export default function HeroSection() {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [slidesToShow, setSlidesToShow] = useState(2);
-  const [autoplay, setAutoplay] = useState(true);
-  const sliderRef = useRef(null);
-
-  useEffect(() => {
-    function handleResize() {
-      if (window.innerWidth < 1024) {
-        setSlidesToShow(1);
-        setAutoplay(false);
-      } else {
-        setSlidesToShow(2);
-        setAutoplay(true);
-      }
-    }
-
-    handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
-  }, []);
 
   async function loadListings() {
     setLoading(true);
@@ -44,13 +24,6 @@ export default function HeroSection() {
     loadListings();
   }, []);
 
-  useEffect(() => {
-    if (!results.length || !sliderRef.current) return;
-    const timer = setTimeout(() => {
-      sliderRef.current?.slickGoTo(0, true);
-    }, 0);
-    return () => clearTimeout(timer);
-  }, [results.length, slidesToShow]);
 
   return (
     <section className="relative overflow-hidden">
@@ -133,33 +106,7 @@ export default function HeroSection() {
                   No listings found.
                 </p>
               ) : (
-                <div className="max-h-[520px] sm:max-h-[560px] overflow-hidden">
-                  <Slider
-                    ref={sliderRef}
-                    key={results.length}
-                    className="hero-slider"
-                    dots={true}
-                    infinite={results.length > 1}
-                    speed={500}
-                    slidesToShow={slidesToShow}
-                    slidesToScroll={1}
-                    arrows={slidesToShow > 1}
-                    autoplay={autoplay}
-                    autoplaySpeed={2600}
-                    pauseOnHover={true}
-                    centerMode={false}
-                    centerPadding="0px"
-                    adaptiveHeight={true}
-                  >
-                    {results.slice(0, 4).map((listing) => (
-                      <div key={listing.id} className="px-2 outline-none h-full">
-                        <div className="w-full h-full">
-                          <ListingCarousel listings={[listing]} className="h-full" />
-                        </div>
-                      </div>
-                    ))}
-                  </Slider>
-                </div>
+                <ListingCarousel listings={results.slice(0, 6)} />
               )}
             </div>
             <div className="absolute -bottom-6 -left-6 hidden lg:block rounded-3xl border border-[#e7dfd2] bg-white/80 px-5 py-4 shadow-[0_20px_45px_rgba(31,41,55,0.12)]">

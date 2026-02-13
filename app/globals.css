@@ -33,29 +33,3 @@
 .home-shell h3 {
   font-family: "Fraunces", "Times New Roman", serif;
 }
-
-/* Slick carousel stability overrides */
-.slick-slider {
-  width: 100%;
-}
-
-.slick-list {
-  overflow: hidden;
-}
-
-.slick-track {
-  display: flex !important;
-  align-items: stretch;
-}
-
-.slick-slide {
-  height: auto;
-}
-
-.slick-slide > div {
-  height: 100%;
-}
-
-.hero-slider .slick-slide {
-  height: 100%;
-}
